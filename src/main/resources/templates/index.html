@@ -4,6 +4,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title></title>
+
+
     <script th:inline="javascript">
         var ua = navigator.userAgent.toLowerCase();
         if (ua.match("micromessenger")) {
@@ -14,9 +16,28 @@
         } else {
             alert('请选择使用微信浏览器！');
         }
+
+        $(function () {
+
+            $.ajax({
+                timeout: 1500,
+                type: 'get',
+                url: "/foo",
+                dataType: 'json',
+                success: function (data) {
+                    $('#uuid').html(data);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("网络超时，请重试");
+                }
+            });
+
+        });
     </script>
 </head>
 <body>
-<p th:text="'Hello, ' + ${userName} + '!'" />
+<p id="uuid" />
+<script th:src="@{/js/location.js}" type="text/javascript"></script>
+<script th:src="@{/js/jquery-2.0.0.min.js}" type="text/javascript"></script>
 </body>
 </html>
