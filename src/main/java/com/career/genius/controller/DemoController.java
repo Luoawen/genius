@@ -17,6 +17,6 @@ public class DemoController {
     @GetMapping(value = "/demo")
     public String demo(Model map) {
         map.addAttribute("userName", "Catalina");
-        return "index.html";
+        return "index";
     }
 }
