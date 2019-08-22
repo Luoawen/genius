@@ -1,6 +1,7 @@
 package com.career.genius.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
     @GetMapping(value = "/demo")
-    public String demo() {
+    public String demo(ModelMap map) {
+        map.put("userName", "Catalina");
         return "index.html";
     }
 }
