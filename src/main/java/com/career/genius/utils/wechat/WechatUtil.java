@@ -1,18 +1,44 @@
 package com.career.genius.utils.wechat;
 
+import com.career.genius.application.wechat.dto.WechatDto;
+import com.career.genius.config.config.Config;
+import jodd.util.StringUtil;
+import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONObject;
+import org.springframework.ui.Model;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import com.career.genius.application.wechat.dto.WechatDto;
-import com.career.genius.config.config.Config;
-import net.sf.json.JSONObject;
+import static com.career.genius.port.setvice.WxService.urlEncodeUTF8;
 
+@Slf4j
 public class WechatUtil {
+
+    /**
+     * 不弹出授权页面，直接跳转，只能获取用户openid
+     */
+    public static final String SCOPESNSAPIBASE = "snsapi_base";
+
+    /**
+     * 网页授权获取用户基本信息第一步：用户同意授权，获取code（GET）
+     */
+    public static String oauth2_authorize_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=RESPONSE_TYPE&scope=SCOPE&state=STATE#wechat_redirect";
+
+    /**
+     * 网页授权获取用户基本信息第二步：通过code换取网页授权access_token（GET）
+     */
+    public static String oauth2_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+
     public static WechatDto getWinXinEntity(String url) {
         WechatDto wx = new WechatDto();
-        String access_token = getAccessToken();
+//        String access_token = getAccessToken();
+        String access_token = ""; // test
         String ticket = getTicket(access_token);
         Map<String, String> ret = Sign.sign(ticket, url);
         wx.setTicket(ret.get("jsapi_ticket"));
@@ -22,20 +48,54 @@ public class WechatUtil {
         return wx;
     }
 
-    // 获取token
-    private static String getAccessToken() {
-        String access_token = "";
-        String grant_type = "client_credential";//获取access_token填写client_credential
-        String AppId = Config.WX_APP_ID;//第三方用户唯一凭证
-        String secret = Config.WX_APP_SECRET;//第三方用户唯一凭证密钥，即appsecret
+    /**
+     * 获取当前请求完整的URL
+     * @param request
+     * @return
+     */
+    public static String getRequestUri(HttpServletRequest request) {
+        Map<String, String[]> params = request.getParameterMap();
+        String requestUri = request.getRequestURL().toString();
+        String queryString = "";
+        for (String key : params.keySet()) {
+            String[] values = params.get(key);
+            for (int i = 0; i < values.length; i++) {
+                String value = values[i];
+                queryString += key + "=" + urlEncodeUTF8(value) + "&";
+            }
+        }
+        if (StringUtil.isNotEmpty(queryString)) {
+            queryString = queryString.substring(0, queryString.length() - 1);
+            requestUri = requestUri + "?" + queryString;
+        }
+        return requestUri.trim();
+    }
+
+    public static String getCode(String appid, String redirectUri, String scope, String state) {
+        String url = oauth2_authorize_url.replace("APPID", urlEncodeUTF8(appid)).replace("REDIRECT_URI", urlEncodeUTF8(redirectUri))
+                .replace("RESPONSE_TYPE", "code").replace("SCOPE", scope).replace("STATE", state);
+        return url;
+    }
+
+    /**
+     * 获取token
+     * @param appId
+     * @param secret
+     * @param code
+     * @return
+     */
+    public static JSONObject getAccessToken(String appId, String secret, String code) {
+//        String access_token = "";
+//        String grant_type = "client_credential";//获取access_token填写client_credential
+//        String AppId = Config.WX_APP_ID;//第三方用户唯一凭证
+//        String secret = Config.WX_APP_SECRET;//第三方用户唯一凭证密钥，即appsecret
         //这个url链接地址和参数皆不能变
-
-        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + AppId + "&secret=" + secret;  //访问链接
-
+//        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + appId + "&secret=" + secret;  //访问链接
+        String url = oauth2_access_token_url.replace("APPID", appId).replace("SECRET", secret).replace("CODE", code);
         try {
             URL urlGet = new URL(url);
             HttpURLConnection http = (HttpURLConnection) urlGet.openConnection();
-            http.setRequestMethod("GET"); // 必须是get方式请求
+            http.setRequestMethod("GET");
             http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             http.setDoOutput(true);
             http.setDoInput(true);
@@ -45,13 +105,14 @@ public class WechatUtil {
             byte[] jsonBytes = new byte[size];
             is.read(jsonBytes);
             String message = new String(jsonBytes);
-            JSONObject demoJson = JSONObject.fromObject(message);
-            access_token = demoJson.getString("access_token");
+            JSONObject json = JSONObject.fromObject(message);
+//            access_token = demoJson.getString("access_token");
             is.close();
+            return json;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return access_token;
+        return null;
     }
 
     // 获取ticket
@@ -80,5 +141,64 @@ public class WechatUtil {
             e.printStackTrace();
         }
         return ticket;
+    }
+
+    public static void getJsSdkParameter(Model model, HttpServletRequest request, boolean needParam) {
+        Object appIdObj = request.getAttribute("appId");
+        log.info("get request parameter appId:{}", appIdObj);
+        String appId = "";
+        if (appIdObj == null){
+            appId = Config.WX_APP_ID;
+        } else {
+            appId = appIdObj.toString();
+        }
+        String jsapiTicket = getJsapiTicket(appId);
+        SortedMap<String, String> params = new TreeMap<String, String>();
+        String nonceStr = com.career.genius.utils.StringUtil.randomString(32);
+        String timeStamp = Sha1Util.getTimeStamp();
+        params.put("noncestr", nonceStr);
+        params.put("jsapi_ticket", jsapiTicket);
+        params.put("timestamp", timeStamp);
+        String url = getRequestUrl(request, needParam);
+        log.info("getJsSdkParameter url : {}", url);
+        params.put("url", url);
+        try {
+            String signature = Sha1Util.createSHA1Sign(params);
+            model.addAttribute("appId", appId);
+            model.addAttribute("nonceStr", nonceStr);
+            model.addAttribute("timeStamp", timeStamp);
+            model.addAttribute("signature", signature);
+            log.info("--- weixin model params: appId:{} --signature:{}", appId, signature);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+    }
+
+    public static String getRequestUrl(HttpServletRequest request, boolean needParams) {
+        Map<String, String[]> params = request.getParameterMap();
+        String requestUrl = request.getRequestURL().toString();
+        if (!needParams) {
+            return requestUrl;
+        }
+        String queryString = "";
+        for (String key : params.keySet()) {
+            String[] values = params.get(key);
+            for (int i = 0; i < values.length; i++) {
+                String value = values[i];
+                queryString += key + "=" + urlEncodeUTF8(value) + "&";
+            }
+        }
+        if (StringUtil.isNotEmpty(queryString)) {
+            queryString = queryString.substring(0, queryString.length() - 1);
+            requestUrl = requestUrl + "?" + queryString;
+        }
+        return requestUrl.trim();
+    }
+
+    private static String getJsapiTicket(String appId) {
+        // TODO 获取
+
+        return "";
     }
 }

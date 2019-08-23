@@ -319,8 +319,8 @@ public class WxService {
         return result;
     }
 
-    private static String create_nonce_str() {
-        return UUID.randomUUID().toString();
+    public static String genUUID(){
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     private static String create_timestamp() {

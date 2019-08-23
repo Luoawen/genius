@@ -18,6 +18,16 @@ public class Constants {
     /* 登录系统用户信息 */
     public static String SESSION_SYS_USER = "SESSION_SYS_USER";
 
+    /**
+     * 登录Token
+     */
+    public static final String COOKIE_PARAM = "LOGIN_COOKIE";
+
+    /**
+     * 默认Cookies的maxAge
+     */
+    public static final int DEFAULT_COOKIE_MAXAGE = 12*60*60;
+
     //请求致诚阿福群星接口地址
     public static String api_name = "credit.evaluation.share.api";
     public static String api_name1 = "fraud.screening.device.api";

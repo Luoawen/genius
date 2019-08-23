@@ -7,15 +7,6 @@
 
 
     <script th:inline="javascript">
-        var ua = navigator.userAgent.toLowerCase();
-        if (ua.match("micromessenger")) {
-            // 微信浏览器
-            window.location.href = "wxauth.html?" + [[${params}]];
-        } else if (ua.match("alipayclient")) {
-            // 支付宝浏览器
-        } else {
-            alert('请选择使用微信浏览器！');
-        }
 
         $(function () {
 
@@ -25,6 +16,7 @@
                 url: "/foo",
                 dataType: 'json',
                 success: function (data) {
+                    alert(data);
                     $('#uuid').html(data);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
