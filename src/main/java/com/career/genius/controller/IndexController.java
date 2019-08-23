@@ -40,9 +40,9 @@ public class IndexController {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
             log.debug("redirectUrl:{}", redirectUrl);
             sendRedirect(resp, redirectUrl);
-            return "";
+        } else {
+            WechatUtil.getJsSdkParameter(model, req, true);
         }
-        WechatUtil.getJsSdkParameter(model, req, true);
         return "index";
     }
 
