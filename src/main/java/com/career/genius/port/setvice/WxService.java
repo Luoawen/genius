@@ -63,7 +63,7 @@ public class WxService {
 
 
     public WechatTokenDto getTokenByCode(String code) {
-        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Config.WX_OPEN_APP_ID + "&secret=" + Config.WX_OPEN_SECRET + "&code=" + code +"&grant_type=authorization_code";
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + Config.WX_APP_ID + "&secret=" + Config.WX_OPEN_SECRET + "&code=" + code +"&grant_type=authorization_code";
         JSONObject result = restTemplate.getForObject(url, JSONObject.class);
         if (ObjectHelper.isNotEmpty(result)) {
             if (ObjectHelper.isNotEmpty(result.get("errcode"))) {
@@ -122,7 +122,7 @@ public class WxService {
     @RequestMapping("/authorize")
     @ResponseBody
     public static String authorize(String uri) {
-        String appid = Config.WX_OPEN_APP_ID;
+        String appid = Config.WX_APP_ID;
         //String uri ="wftest.zzff.net/wx/weixinLogin";
         String result = "";
         BufferedReader in = null;

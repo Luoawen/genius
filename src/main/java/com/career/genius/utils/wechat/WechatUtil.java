@@ -56,6 +56,9 @@ public class WechatUtil {
     public static String getRequestUri(HttpServletRequest request) {
         Map<String, String[]> params = request.getParameterMap();
         String requestUri = request.getRequestURL().toString();
+        if (requestUri.contains("127.0.0.1:8080")){
+            requestUri = requestUri.replace("127.0.0.1:8080", Config.CURRENT_DOMAIN);
+        }
         String queryString = "";
         for (String key : params.keySet()) {
             String[] values = params.get(key);
