@@ -2,7 +2,6 @@ package com.career.genius.controller;
 
 import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
-import com.career.genius.domain.user.User;
 import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.utils.Constants;
 import com.career.genius.utils.CookiesUtil;
@@ -40,10 +39,11 @@ public class IndexController {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
             log.debug("redirectUrl:{}", redirectUrl);
             sendRedirect(resp, redirectUrl);
+            return null;
         } else {
             WechatUtil.getJsSdkParameter(model, req, true);
+            return "index";
         }
-        return "index";
     }
 
     private String getWechatOAuthUrl(HttpServletRequest request, String sourceUrl) {
@@ -98,7 +98,9 @@ public class IndexController {
      */
     private void sendRedirect(HttpServletResponse resp, String url) {
         try {
-            resp.sendRedirect(resp.encodeRedirectURL(url));
+            String redirectUrl = resp.encodeRedirectURL(url);
+            log.debug("redirectUrl:{}", redirectUrl);
+            resp.sendRedirect(redirectUrl);
         } catch (Exception e) {
             log.warn("跳转授权路径失败,异常:", e);
         }
