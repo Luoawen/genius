@@ -148,7 +148,7 @@ public class WechatUtil {
 
     public static void getJsSdkParameter(Model model, HttpServletRequest request, boolean needParam) {
         Object appIdObj = request.getAttribute("appId");
-        log.info("get request parameter appId:{}", appIdObj);
+        log.debug("get request parameter appId:{}", appIdObj);
         String appId = "";
         if (appIdObj == null){
             appId = Config.WX_APP_ID;
@@ -156,6 +156,7 @@ public class WechatUtil {
             appId = appIdObj.toString();
         }
         String jsapiTicket = getJsapiTicket(appId);
+        log.debug("jsapiTicket:{}", jsapiTicket);
         SortedMap<String, String> params = new TreeMap<String, String>();
         String nonceStr = com.career.genius.utils.StringUtil.randomString(32);
         String timeStamp = Sha1Util.getTimeStamp();
@@ -181,6 +182,9 @@ public class WechatUtil {
     public static String getRequestUrl(HttpServletRequest request, boolean needParams) {
         Map<String, String[]> params = request.getParameterMap();
         String requestUrl = request.getRequestURL().toString();
+        if (requestUrl.contains("127.0.0.1:8080")){
+            requestUrl = requestUrl.replace("127.0.0.1:8080", Config.CURRENT_DOMAIN);
+        }
         if (!needParams) {
             return requestUrl;
         }
