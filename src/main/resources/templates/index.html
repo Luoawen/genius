@@ -16,8 +16,7 @@
                 url: "/users/user/" + phone,
                 dataType: 'json',
                 success: function (data) {
-                    alert(data.user_name);
-                    $('#userName').val(data.user_name);
+                    $('#userName').val(data.data.user_name);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
