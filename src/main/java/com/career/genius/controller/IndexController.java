@@ -37,7 +37,7 @@ public class IndexController {
         CookieUser cookieUser = getCookieUser(req, resp);
         if (null == cookieUser) {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
-            log.info("redirectUrl:{}", redirectUrl);
+            log.info("index redirectUrl:{}", redirectUrl);
             sendRedirect(resp, redirectUrl);
             return null;
         } else {
@@ -51,6 +51,7 @@ public class IndexController {
         log.info("get request parameter appId:{}", appIdObj);
 
         String redirectUri = Config.CURRENT_DOMAIN + "/account/weChatUserLogin?sourceUrl=" + sourceUrl;
+        log.info("getWechatOAuthUrl redirectUri:{}", redirectUri);
         return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
     }
 
@@ -100,7 +101,7 @@ public class IndexController {
     private void sendRedirect(HttpServletResponse resp, String url) {
         try {
             String redirectUrl = resp.encodeRedirectURL(url);
-            log.debug("redirectUrl:{}", redirectUrl);
+            log.debug("sendRedirect redirectUrl:{}", redirectUrl);
             resp.sendRedirect(redirectUrl);
         } catch (Exception e) {
             log.warn("跳转授权路径失败,异常:", e);
