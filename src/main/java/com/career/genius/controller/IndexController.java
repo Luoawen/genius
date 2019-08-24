@@ -96,12 +96,12 @@ public class IndexController {
 
     /**
      * 跳转新url
-     * @param url 全路径,例如:http://www.baidu.com?xxx=xxx
+     * @param redirectUrl 全路径,例如:http://www.baidu.com?xxx=xxx
      */
-    private void sendRedirect(HttpServletResponse resp, String url) {
+    private void sendRedirect(HttpServletResponse resp, String redirectUrl) {
         try {
-            String redirectUrl = resp.encodeRedirectURL(url);
-            log.debug("sendRedirect redirectUrl:{}", redirectUrl);
+//            String redirectUrl = resp.encodeRedirectURL(url);
+            log.info("sendRedirect redirectUrl:{}", redirectUrl);
             resp.sendRedirect(redirectUrl);
         } catch (Exception e) {
             log.warn("跳转授权路径失败,异常:", e);
