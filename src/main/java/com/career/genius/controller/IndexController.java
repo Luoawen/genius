@@ -38,8 +38,9 @@ public class IndexController {
         if (null == cookieUser) {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
             log.info("index redirectUrl:{}", redirectUrl);
-            sendRedirect(resp, redirectUrl);
-            return null;
+//            sendRedirect(resp, redirectUrl);
+//            return null;
+            return "redirect:" + redirectUrl;
         } else {
             WechatUtil.getJsSdkParameter(model, req, true);
             return "index";
