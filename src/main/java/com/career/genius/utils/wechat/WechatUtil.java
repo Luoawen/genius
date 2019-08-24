@@ -24,11 +24,15 @@ public class WechatUtil {
      * 不弹出授权页面，直接跳转，只能获取用户openid
      */
     public static final String SCOPESNSAPIBASE = "snsapi_base";
+    /**
+     * 弹出用户授权页面，可获取客户其他信息
+     */
+    public static final String SCOPESNSAPI_USERINFO = "snsapi_userinfo";
 
     /**
      * 网页授权获取用户基本信息第一步：用户同意授权，获取code（GET）
      */
-    public static String oauth2_authorize_url = "https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=RESPONSE_TYPE&scope=SCOPE&state=STATE";
+    public static String oauth2_authorize_url = "https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect?response_type=RESPONSE_TYPE&scope=SCOPE&state=STATE&appid=APPID&redirect_uri=REDIRECT_URI";
 
     /**
      * 网页授权获取用户基本信息第二步：通过code换取网页授权access_token（GET）
