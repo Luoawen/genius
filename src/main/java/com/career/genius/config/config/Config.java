@@ -27,4 +27,5 @@ public class Config {
      * 当前域名
      */
     public static String CURRENT_DOMAIN = "http://m.yunmaidianzi.com";
+    public static String COOKIE_DOMAIN = "m.yunmaidianzi.com";
 }

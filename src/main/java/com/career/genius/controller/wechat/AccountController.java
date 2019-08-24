@@ -54,9 +54,9 @@ public class AccountController {
                     CookieUser cookieUser = new CookieUser(userId, appId);
 //                    AliOcsMemcachedUtil.setToCache(loginToken, cookieUser);
                     // 获得配置cookie有效时长
-                    int time = StringUtil.parseInt(Config.CURRENT_DOMAIN, Constants.DEFAULT_COOKIE_MAXAGE);
+                    int time = StringUtil.parseInt(Config.COOKIE_DOMAIN, Constants.DEFAULT_COOKIE_MAXAGE);
                     // 写入cookie
-                    CookiesUtil.addCookie(Constants.COOKIE_PARAM, loginToken, Config.CURRENT_DOMAIN, time, response);
+                    CookiesUtil.addCookie(Constants.COOKIE_PARAM, loginToken, Config.COOKIE_DOMAIN, time, response);
                     logger.info("获取微信用户成功,进行缓存并跳转到业务 url:{} code:{}", sourceUrl, code);
                     return "redirect:" + sourceUrl;
                 } else {
