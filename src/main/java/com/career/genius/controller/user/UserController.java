@@ -38,7 +38,7 @@ public class UserController {
     @ApiOperation(value = "首页数据接口")
     @GetMapping(value = "/users/{userId}")
     public EntityDto<MainMuenVo> getUserData() {
-        return new EntityDto<>(new MainMuenVo(),CodeEnum.Success.getCode(),"成功");
+        return new EntityDto<>(new MainMuenVo(), CodeEnum.Success.getCode(),"成功");
     }
 
     @Submit

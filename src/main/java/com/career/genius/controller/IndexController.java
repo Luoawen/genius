@@ -42,6 +42,11 @@ public class IndexController {
         }
 
         model.addAttribute("userId", cookieUser.getUserId());
+        String phone = req.getParameter("phone");
+        if (StringUtil.isEmpty(phone)){
+            phone = "110";
+        }
+        model.addAttribute("phone", phone);
 
         WechatUtil.getJsSdkParameter(model, req, true);
         return "index";

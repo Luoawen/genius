@@ -10,14 +10,14 @@
 
         $(function () {
 
+            var phone = [[${phone}]];
             $.ajax({
-                timeout: 1500,
                 type: 'get',
-                url: "/foo",
+                url: "/users/user/" + phone,
                 dataType: 'json',
                 success: function (data) {
                     alert(data);
-                    $('#uuid').html(data);
+                    $('#uuid').html(data.user_name);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
