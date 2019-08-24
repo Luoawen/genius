@@ -37,7 +37,7 @@ public class IndexController {
         CookieUser cookieUser = getCookieUser(req, resp);
         if (null == cookieUser) {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
-            log.debug("redirectUrl:{}", redirectUrl);
+            log.info("redirectUrl:{}", redirectUrl);
             sendRedirect(resp, redirectUrl);
             return null;
         } else {
@@ -48,7 +48,7 @@ public class IndexController {
 
     private String getWechatOAuthUrl(HttpServletRequest request, String sourceUrl) {
         Object appIdObj = request.getAttribute("appId");
-        log.debug("get request parameter appId:{}", appIdObj);
+        log.info("get request parameter appId:{}", appIdObj);
 
         String redirectUri = Config.CURRENT_DOMAIN + "/account/weChatUserLogin?sourceUrl=" + sourceUrl;
         return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
@@ -61,6 +61,7 @@ public class IndexController {
 
         // 测试代码
         if (StringUtil.isNotEmpty(loginToken)) {
+            log.info("sumulate testUserId");
             CookieUser cookieUser = new CookieUser("testUserId", Config.WX_APP_ID);
             return cookieUser;
         }

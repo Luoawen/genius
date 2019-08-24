@@ -56,8 +56,8 @@ public class WechatUtil {
     public static String getRequestUri(HttpServletRequest request) {
         Map<String, String[]> params = request.getParameterMap();
         String requestUri = request.getRequestURL().toString();
-        if (requestUri.contains("127.0.0.1:8080")){
-            requestUri = requestUri.replace("127.0.0.1:8080", Config.CURRENT_DOMAIN);
+        if (requestUri.contains("http://127.0.0.1:8080")){
+            requestUri = requestUri.replace("http://127.0.0.1:8080", Config.CURRENT_DOMAIN);
         }
         String queryString = "";
         for (String key : params.keySet()) {
@@ -182,8 +182,8 @@ public class WechatUtil {
     public static String getRequestUrl(HttpServletRequest request, boolean needParams) {
         Map<String, String[]> params = request.getParameterMap();
         String requestUrl = request.getRequestURL().toString();
-        if (requestUrl.contains("127.0.0.1:8080")){
-            requestUrl = requestUrl.replace("127.0.0.1:8080", Config.CURRENT_DOMAIN);
+        if (requestUrl.contains("http://127.0.0.1:8080")){
+            requestUrl = requestUrl.replace("http://127.0.0.1:8080", Config.CURRENT_DOMAIN);
         }
         if (!needParams) {
             return requestUrl;
