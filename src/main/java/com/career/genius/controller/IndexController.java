@@ -31,20 +31,20 @@ public class IndexController {
     UserDao userDao;
 
     @GetMapping(value = "/index")
-    public String index(HttpServletRequest req, HttpServletResponse resp, Model model) {
+    public String index(HttpServletRequest req, Model model) {
         String sourceUrl = WechatUtil.getRequestUri(req);
         log.info("sourceUrl:{}", sourceUrl);
-        CookieUser cookieUser = getCookieUser(req, resp);
+        CookieUser cookieUser = getCookieUser(req);
         if (null == cookieUser) {
             String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
             log.info("index redirectUrl:{}", redirectUrl);
-//            sendRedirect(resp, redirectUrl);
-//            return null;
             return "redirect:" + redirectUrl;
-        } else {
-            WechatUtil.getJsSdkParameter(model, req, true);
-            return "index";
         }
+
+        model.addAttribute("userId", cookieUser.getUserId());
+
+        WechatUtil.getJsSdkParameter(model, req, true);
+        return "index";
     }
 
     private String getWechatOAuthUrl(HttpServletRequest request, String sourceUrl) {
@@ -56,7 +56,7 @@ public class IndexController {
         return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
     }
 
-    public CookieUser getCookieUser(HttpServletRequest req, HttpServletResponse resp) {
+    private CookieUser getCookieUser(HttpServletRequest req) {
         // 获取 loginToken
         String loginToken = CookiesUtil.getValueByCookieName(req, Constants.COOKIE_PARAM);
         log.info("loginToken:{}", loginToken);
@@ -89,23 +89,7 @@ public class IndexController {
 //        }
 
         req.setAttribute("appId", Config.WX_APP_ID);
-//        req.setAttribute("appSecretKey", Config.WX_APP_SECRET);
-//        req.setAttribute("apiKey", apiKey);
-//        req.setAttribute("mchId", mchId);
         return cookieUser;
     }
 
-    /**
-     * 跳转新url
-     * @param redirectUrl 全路径,例如:http://www.baidu.com?xxx=xxx
-     */
-    private void sendRedirect(HttpServletResponse resp, String redirectUrl) {
-        try {
-//            String redirectUrl = resp.encodeRedirectURL(url);
-            log.info("sendRedirect redirectUrl:{}", redirectUrl);
-            resp.sendRedirect(redirectUrl);
-        } catch (Exception e) {
-            log.warn("跳转授权路径失败,异常:", e);
-        }
-    }
 }
