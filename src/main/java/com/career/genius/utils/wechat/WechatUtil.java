@@ -28,7 +28,7 @@ public class WechatUtil {
     /**
      * 网页授权获取用户基本信息第一步：用户同意授权，获取code（GET）
      */
-    public static String oauth2_authorize_url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=RESPONSE_TYPE&scope=SCOPE&state=STATE#wechat_redirect";
+    public static String oauth2_authorize_url = "https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect?appid=APPID&redirect_uri=REDIRECT_URI&response_type=RESPONSE_TYPE&scope=SCOPE&state=STATE";
 
     /**
      * 网页授权获取用户基本信息第二步：通过code换取网页授权access_token（GET）
