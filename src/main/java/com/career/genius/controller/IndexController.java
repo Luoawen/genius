@@ -51,9 +51,9 @@ public class IndexController {
         Object appIdObj = request.getAttribute("appId");
         log.info("get request parameter appId:{}", appIdObj);
 
-        String redirectUri = Config.CURRENT_DOMAIN + "/account/weChatUserLogin?sourceUrl=" + sourceUrl;
+        String redirectUri = Config.CURRENT_DOMAIN + "/account/wechatUserLogin?sourceUrl=" + sourceUrl;
         log.info("getWechatOAuthUrl redirectUri:{}", redirectUri);
-        return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPI_USERINFO, "state");
+        return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
     }
 
     public CookieUser getCookieUser(HttpServletRequest req, HttpServletResponse resp) {

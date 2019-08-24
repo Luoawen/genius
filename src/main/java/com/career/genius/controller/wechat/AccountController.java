@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 用户登录注册验证控制器
  */
-@RequestMapping(value = "/account")
 @Controller
+@RequestMapping(value = "/account")
 public class AccountController {
 
     private static Logger logger = LoggerFactory.getLogger(AccountController.class);
@@ -70,6 +69,6 @@ public class AccountController {
         logger.error("微信授权回调成功,微信授权失败code:{} is empty ! sourceUrl:{}", code, sourceUrl);
         return "error";
     }
-    
+
 
 }
