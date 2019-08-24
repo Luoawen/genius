@@ -301,7 +301,7 @@ public class WxService {
     public static String urlEncodeUTF8(String source) {
         String result = source;
         try {
-            result = java.net.URLEncoder.encode(source, "utf-8");
+            result = java.net.URLEncoder.encode(source, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
