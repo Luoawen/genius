@@ -34,18 +34,17 @@
         }
 
         $(function () {
-
             var userId = [[${userId}]];
             var templateId = getQueryString("templateId");
-            alert(templateId);
+            // alert('userId=' + userId + ',templateId' + templateId);
             $.ajax({
                 type: 'get',
                 url: "/wechat/share/code",
                 dataType: 'json',
-                data: [{
+                data: {
                     userId: userId,
                     templateId: templateId
-                }]
+                },
                 success: function (data) {
                     // $('#userName').val(data.data.content);
                     alert(data.data.content);
