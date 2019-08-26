@@ -37,6 +37,7 @@
 
             var userId = [[${userId}]];
             var templateId = getQueryString("templateId");
+            alert(templateId);
             $.ajax({
                 type: 'get',
                 url: "/wechat/share/code",
@@ -47,6 +48,7 @@
                 }]
                 success: function (data) {
                     // $('#userName').val(data.data.content);
+                    alert(data.data.content);
                     $("#content").html(data.data.content);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
