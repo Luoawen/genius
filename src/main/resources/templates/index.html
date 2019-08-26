@@ -52,12 +52,13 @@
                     // $('#userName').val(data.data.content);
                     var content = data.data.content;
                     var jsonArr = JSON.parse(content);
+                    var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
-                    if (currentValue.type == 2){
-                        $("#content").html(currentValue.content);
-                    }
+                        if (currentValue.type == 2){
+                            all = all + currentValue.content) + "<br/>";
+                        }
                     }, this)
-                    // $("#content").html(jsonObj.content);
+                    $("#content").html(all);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
