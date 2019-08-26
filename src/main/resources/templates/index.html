@@ -41,9 +41,9 @@
             $.ajax({
                 type: 'post',
                 url: "/wechat/share/code",
-                // contentType: "application/json;",
-                dataType: 'json',
                 header: {"Content-Type": "application/x-www-form-urlencoded"},
+                contentType: "application/json;",
+                dataType: 'json',
                 data: {
                     userId: userId,
                     templateId: templateId
