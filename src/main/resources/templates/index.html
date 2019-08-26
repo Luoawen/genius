@@ -37,11 +37,13 @@
             var userId = [[${userId}]];
             var templateId = getQueryString("templateId");
             // alert('userId=' + userId + ',templateId' + templateId);
+
             $.ajax({
                 type: 'post',
                 url: "/wechat/share/code",
-                contentType: "application/json;",
+                // contentType: "application/json;",
                 dataType: 'json',
+                header: {"Content-Type": "application/x-www-form-urlencoded"},
                 data: {
                     userId: userId,
                     templateId: templateId
