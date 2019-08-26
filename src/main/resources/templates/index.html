@@ -54,9 +54,7 @@
                     var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
-                        if (currentValue.type == 2){
-                            all = all + currentValue.content) + "<br/>";
-                        }
+                        all = all + currentValue.content + "<br/>";
                     }, this)
                     $("#content").html(all);
                 },
