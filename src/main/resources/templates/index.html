@@ -38,8 +38,9 @@
             var templateId = getQueryString("templateId");
             // alert('userId=' + userId + ',templateId' + templateId);
             $.ajax({
-                type: 'get',
+                type: 'post',
                 url: "/wechat/share/code",
+                contentType: "application/json;",
                 dataType: 'json',
                 data: {
                     userId: userId,
