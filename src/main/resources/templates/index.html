@@ -51,8 +51,13 @@
                 success: function (data) {
                     // $('#userName').val(data.data.content);
                     var content = data.data.content;
-                    var jsonObj = JSON.parse(content);
-                    $("#content").html(jsonObj.content);
+                    var jsonArr = JSON.parse(content);
+                    jsonArr.forEach(function(currentValue, index, arr){
+                    if (currentValue.type == 2){
+                        $("#content").html(currentValue.content);
+                    }
+                    }, this)
+                    // $("#content").html(jsonObj.content);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
