@@ -47,6 +47,7 @@ public class AccountController {
         logger.info("微信授权回调成功,开始授权回调code:{} appid:{} appSecretKey:{} url:{}", code, appId, appSecretKey, sourceUrl);
         if (!StringUtil.empty(code)) {
             JSONObject weiXinOauth2Token = WechatUtil.getAccessToken(appId, appSecretKey, code);
+            logger.info("code:{} weiXinOauth2Token:{}", code, weiXinOauth2Token);
             if (weiXinOauth2Token != null) {
                 String userId = userApplication.getUserId(weiXinOauth2Token, request);
                 if (StringUtil.isNotEmpty(userId)) {

@@ -1,19 +1,17 @@
 package com.career.genius.controller.wechat;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.alibaba.fastjson.JSON;
 import com.career.genius.application.auth.dto.AuthUserInfoDto;
 import com.career.genius.application.template.TemplateApplicaton;
-import com.career.genius.application.template.dto.TemplateDto;
 import com.career.genius.application.template.dto.ViewTemplateDto;
 import com.career.genius.application.template.vo.TemplateVO;
-import com.career.genius.application.wechat.bean.WechatUserInfo;
+import com.career.genius.application.user.UserApplication;
 import com.career.genius.application.wechat.dto.WechatDto;
-import com.career.genius.application.wechat.dto.WechatTokenDto;
 import com.career.genius.application.wechat.vo.WechatAuthVO;
 import com.career.genius.application.wechat.vo.WechatShareVO;
 import com.career.genius.config.Exception.GeniusException;
 import com.career.genius.config.config.Config;
+import com.career.genius.domain.user.User;
 import com.career.genius.port.setvice.WxService;
 import com.career.genius.utils.session.SessionUtil;
 import com.career.genius.utils.wechat.WXUtil;
@@ -22,9 +20,13 @@ import com.usm.enums.CodeEnum;
 import com.usm.vo.EntityDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/wechat")
 @Api(tags = "微信")
@@ -32,6 +34,8 @@ public class WechatController {
 
     @Autowired
     TemplateApplicaton templateApplicaton;
+    @Autowired
+    UserApplication userApplication;
 
     @Autowired
     WxService wxService;
@@ -58,9 +62,16 @@ public class WechatController {
     @ApiOperation(value = "微信分享页面请求的数据")
     @PostMapping(value = "/share/code")
     public EntityDto<TemplateVO> getShareTemplate(@RequestBody ViewTemplateDto dto) throws GeniusException {
-        WechatTokenDto wechatToken = wxService.getTokenByCode(dto.getWechatCode());
-        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccess_token(), wechatToken.getOpenId());
-        dto.setWechatUserInfo(wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl());
+        log.info(JSON.toJSONString(dto));
+        // 不需要每次都去微信授权索取用户信息，直接在库里面找
+//        WechatTokenDto wechatToken = wxService.getTokenByCode(dto.getWechatCode());
+//        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccess_token(), wechatToken.getOpenId());
+//        dto.setWechatUserInfo(wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl());
+
+        User user = userApplication.getUserById(dto.getUserId());
+        if (user != null){
+            dto.setWechatUserInfo(user.getUserName(), user.getHeadImage());
+        }
         TemplateVO result = templateApplicaton.addViewInfo(dto);
         return new EntityDto<>(result, CodeEnum.Success.getCode(),"成功");
     }

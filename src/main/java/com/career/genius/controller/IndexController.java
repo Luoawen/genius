@@ -42,11 +42,11 @@ public class IndexController {
         }
 
         model.addAttribute("userId", cookieUser.getUserId());
-        String phone = req.getParameter("phone");
-        if (StringUtil.isEmpty(phone)){
-            phone = "110";
-        }
-        model.addAttribute("phone", phone);
+//        String phone = req.getParameter("phone");
+//        if (StringUtil.isEmpty(phone)){
+//            phone = "110";
+//        }
+//        model.addAttribute("phone", phone);
 
         WechatUtil.getJsSdkParameter(model, req, true);
         return "index";
@@ -58,7 +58,7 @@ public class IndexController {
 
         String redirectUri = Config.CURRENT_DOMAIN + "/account/wechatUserLogin?sourceUrl=" + sourceUrl;
         log.info("getWechatOAuthUrl redirectUri:{}", redirectUri);
-        return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
+        return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPI_USERINFO, "state");
     }
 
     private CookieUser getCookieUser(HttpServletRequest req) {
@@ -69,7 +69,7 @@ public class IndexController {
         // 测试代码
         if (StringUtil.isNotEmpty(loginToken)) {
             log.info("sumulate testUserId");
-            CookieUser cookieUser = new CookieUser("testUserId", Config.WX_APP_ID);
+            CookieUser cookieUser = new CookieUser("2c9242a76c2801cd016c4079ce09000d", Config.WX_APP_ID);
             return cookieUser;
         }
 

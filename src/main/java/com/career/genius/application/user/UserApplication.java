@@ -46,6 +46,10 @@ public class UserApplication {
         userDao.save(user);
     }
 
+    public User getUserById(String userId) {
+        return userDao.findUserById(userId);
+    }
+
     /**
      * 生成微信用户
      * @param weiXinOauth2Token
