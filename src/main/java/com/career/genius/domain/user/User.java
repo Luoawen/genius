@@ -59,11 +59,11 @@ public class User extends BaseEntity {
      * @Date  绑定微信用户信息
      * @Discription
      **/
-    public void bindWechatUser(WechatUserInfoDto dto) {
-        this.wechatUniqueId = dto.getUniqueId();
-        this.userName = dto.getUserName();
-        this.headImage = dto.getHeadImage();
-        this.openId = dto.getOpenId();
+    public void bindWechatUser(String wechatUniqueId,String userName,String headImage,String openId) {
+        this.wechatUniqueId = wechatUniqueId;
+        this.userName = userName;
+        this.headImage = headImage;
+        this.openId = openId;
         super.setUpdateTime(new Date());
     }
 
