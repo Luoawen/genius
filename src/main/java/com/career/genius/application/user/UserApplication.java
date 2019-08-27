@@ -66,14 +66,16 @@ public class UserApplication {
         //TODO 创建用户
         log.info("weiXinOauth2Token:{}", weiXinOauth2Token);
 //        {"access_token":"24_Dk0Qxpzf4NYCX_r5sXDH9H8OnW38DQN309Qscu7cMVV4ZAqjIF0t1BHxZHiQ3loQukaMd18CszFZvIQPZALr1QBWkpW_L1Tpm95JiyvdHTk","expires_in":7200,"refresh_token":"24_iq5_SIsIrdCMVg5yDLtfL6PvFF4-RPHi1O2-OZ9rKrBQ1qWh9-R8dXo-nqHL2_IIBrwgB35yi3l5LyhoHtpm1AqgDDcA_LYWQqP9VP4DoIw","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_userinfo","unionid":"ogaZW5_sQo63fPjoYSv3P9holuUI"}
-        WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
-        User user = userDao.findUserByOpenId(wechatToken.getOpenId());
+//        WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
+        String openId = weiXinOauth2Token.getString("openid");
+        String accessToken = weiXinOauth2Token.getString("access_token");
+        User user = userDao.findUserByOpenId(openId);
         //用户存在则直接返回用户ID
         if (ObjectHelper.isNotEmpty(user)) {
             return user.getId();
         }
         //不存在生成用户
-        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccessToken(), wechatToken.getOpenId());
+        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(accessToken, openId);
         user = new User();
         user.bindWechatUser(wechatUserInfo.getUnionid(),wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl(),wechatUserInfo.getOpenId());
         user = userDao.save(user);
