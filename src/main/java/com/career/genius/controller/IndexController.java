@@ -4,6 +4,7 @@ import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
 import com.career.genius.config.config.RedisService;
 import com.career.genius.config.enumconf.UaType;
+import com.career.genius.domain.user.User;
 import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.utils.Constants;
 import com.career.genius.utils.CookiesUtil;
@@ -16,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 请描述该类
@@ -35,10 +37,10 @@ public class IndexController {
     RedisService redisService;
 
     @GetMapping(value = "/index")
-    public String index(HttpServletRequest req, Model model) {
+    public String index(HttpServletRequest req, HttpServletResponse resp, Model model) {
         String sourceUrl = WechatUtil.getRequestUri(req);
         log.info("sourceUrl:{}", sourceUrl);
-        CookieUser cookieUser = getCookieUser(req);
+        CookieUser cookieUser = getCookieUser(req, resp);
 
         if (null == cookieUser) {
             UaType uaType = getUaType(req);
@@ -74,37 +76,32 @@ public class IndexController {
         return WechatUtil.getCode(appIdObj.toString(), redirectUri, WechatUtil.SCOPESNSAPIBASE, "state");
     }
 
-    private CookieUser getCookieUser(HttpServletRequest req) {
+    private CookieUser getCookieUser(HttpServletRequest req, HttpServletResponse resp) {
         // 获取 loginToken
         String loginToken = CookiesUtil.getValueByCookieName(req, Constants.COOKIE_PARAM);
         log.info("loginToken:{}", loginToken);
 
-        // 测试代码
-        if (StringUtil.isNotEmpty(loginToken)) {
-            log.info("sumulate testUserId");
-            CookieUser cookieUser = new CookieUser("2c9242a76c2801cd016c4079ce09000d", Config.WX_APP_ID);
-            return cookieUser;
-        }
-
         CookieUser cookieUser = null;
-
         //cookie 校验
-//        if (StringUtil.isNotEmpty(loginToken)) {
+        if (StringUtil.isNotEmpty(loginToken)) {
 //            cookieUser = AliOcsMemcachedUtil.getCache(loginToken, CookieUser.class);
-//            if (cookieUser != null){
-//                String userId = cookieUser.getUserId();
-//                User user = userDao.findUserById(userId);
-//                if (user == null) {
-//                    CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
+            // 模拟缓存
+            log.info("sumulate cached user");
+            cookieUser = new CookieUser("2c9242a76c2801cd016c4079ce09000d", Config.WX_APP_ID);
+            if (cookieUser != null){
+                String userId = cookieUser.getUserId();
+                User user = userDao.findUserById(userId);
+                if (user == null) {
+                    CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
 //                    AliOcsMemcachedUtil.deleteCache(loginToken);
-//                    return null;
-//                }
-//            } else {
-//                CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
+                    return null;
+                }
+            } else {
+                CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
 //                AliOcsMemcachedUtil.deleteCache(loginToken);
-//                return null;
-//            }
-//        }
+                return null;
+            }
+        }
 
         req.setAttribute("appId", Config.WX_APP_ID);
         return cookieUser;
@@ -115,6 +112,11 @@ public class IndexController {
         String uagent = req.getHeader("user-agent");
         log.info("当前浏览器的user-agent:{}", uagent);
         return UaType.get(uagent.toLowerCase());
+    }
+
+    @GetMapping(value = "/clearCookie")
+    public void clearCookie(HttpServletRequest req, HttpServletResponse resp){
+        CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.COOKIE_DOMAIN);
     }
 
     @GetMapping(value = "/fun")

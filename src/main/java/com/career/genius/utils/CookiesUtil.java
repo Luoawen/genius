@@ -50,9 +50,8 @@ public class CookiesUtil {
 
 	/**
 	 * 删除cookie
-	 * 
 	 */
-	public static void removeCookie( HttpServletRequest request,HttpServletResponse response,String name ,String domain) {
+	public static void removeCookie( HttpServletRequest request, HttpServletResponse response, String name ,String domain) {
 		Cookie[] cookies = request.getCookies();
 		if( cookies != null && cookies.length > 0 ) {
 			for( Cookie cookie : cookies ) {
@@ -94,8 +93,7 @@ public class CookiesUtil {
 		if( cookieMap.containsKey( name ) ) {
 			Cookie cookie = (Cookie)cookieMap.get( name );
 			return cookie;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
