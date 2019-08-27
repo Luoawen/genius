@@ -10,14 +10,40 @@
     <script th:inline="javascript">
 
 
-        function getUrlParam(url, name) {
-            var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
-            var r = url.match(reg);
-            if (r != null) {
-                return decodeURIComponent(r[2]);
+        var sec = 0;
+        var minu = 0;
+        var hou = 0;
+        // 每隔一秒刷新一次
+        window.setTimeout("uupdate()", 1000);
+
+        function uupdate() {
+            sec++;
+            if(sec == 60) {
+                sec = 0;
+                minu += 1;
             }
-            return '';
+            if(minu == 60) {
+                minu = 0;
+                hou += 1;
+            }
+            var ss04 = hou + "时" + minu + "分" + sec + "秒";
+            document.getElementById('yy004').innerHTML = ss04;
+            window.setTimeout("uupdate()", 1000);
         }
+
+        function showtime() {
+            var nowTime = new Date();//创建时间对象实例
+            var hours = nowTime.getHours();//获取当前小时数
+            var minutes = nowTime.getMinutes();//获取当前分钟数
+            var seconds = nowTime.getSeconds();//获取当前秒数
+            var timer = " "+((hours>12)?hours-12:hours);//将小时数质赋予变量timer
+            timer +=((minutes<10)?"0:":":")+minutes;//将分钟数值赋予变量timer
+            timer += ((seconds<10)?"0:":":")+seconds;//将秒数值赋予变量timer
+            timer +=" "+((hours>12)?"pm":"am");//将字符am或pm赋予变量timer
+            document.getElementById('clock').innerHTML = timer;
+            setTimeout("showtime()",1000);
+        }
+
 
         function getQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -65,7 +91,9 @@
         });
     </script>
 </head>
-<body>
+<body onload="showtime()">
+<div>当前时间：<span id="clock"></span ></div>
+<div>当前页面停留时间：<span id="yy004" >0时0分0秒</span></div>
 <p th:text="'Hello, ' + ${userId} + '!'" />
 <div id="content"></div>
 </body>
