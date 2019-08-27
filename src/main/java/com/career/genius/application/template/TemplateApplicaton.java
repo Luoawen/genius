@@ -94,8 +94,10 @@ public class TemplateApplicaton {
         }
         TemplateViews views = new TemplateViews();
         views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage());
-        viewTemplateDao.save(views);
-        return templateQuery.getTemplateInfo(dto.getTemplateId());
+        views = viewTemplateDao.save(views);
+        TemplateVO templateVO = templateQuery.getTemplateInfo(dto.getTemplateId());
+        templateVO.setViewId(views.getId());
+        return templateVO;
     }
 
     /**

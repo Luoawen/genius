@@ -41,4 +41,9 @@ public class TemplateVO {
     @ApiModelProperty(value = "更新时间")
     @ColumnAlias(value = "update_time")
     private Date updateTime;
+
+
+    @ApiModelProperty(value = "浏览记录ID")
+    @ColumnAlias(value = "viewId")
+    private String viewId;
 }
