@@ -62,9 +62,9 @@ public class UserApplication {
     public String getUserId(JSONObject weiXinOauth2Token, HttpServletRequest request) {
         log.info("weiXinOauth2Token:{}", weiXinOauth2Token);
 //        {"access_token":"24_Dk0Qxpzf4NYCX_r5sXDH9H8OnW38DQN309Qscu7cMVV4ZAqjIF0t1BHxZHiQ3loQukaMd18CszFZvIQPZALr1QBWkpW_L1Tpm95JiyvdHTk","expires_in":7200,"refresh_token":"24_iq5_SIsIrdCMVg5yDLtfL6PvFF4-RPHi1O2-OZ9rKrBQ1qWh9-R8dXo-nqHL2_IIBrwgB35yi3l5LyhoHtpm1AqgDDcA_LYWQqP9VP4DoIw","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_userinfo","unionid":"ogaZW5_sQo63fPjoYSv3P9holuUI"}
+//        {"access_token":"24_eDcOy8FDkdi4NvOpNE2oQa7qCzMXS65ZPvhkUs2ys_uV_W8hiqlbHiKPxxfQKgg8VtOIT-r_SnzEz-GZDwi4Ew","expires_in":7200,"refresh_token":"24_pLEUAhJqN4cTQirTnnpAmnPp_svoW7mI1OmRJEiIJ_zrAjmUJ0dkIJQYlA769Df1IfA5-bcCTS91c-bxs7vqJA","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_base"}
 //        WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
         String openId = weiXinOauth2Token.getString("openid");
-        String unionid = weiXinOauth2Token.getString("unionid");
         String accessToken = weiXinOauth2Token.getString("access_token");
         User user = userDao.findUserByOpenId(openId);
         //用户存在则直接返回用户ID
@@ -74,6 +74,7 @@ public class UserApplication {
         //不存在生成用户
         //TODO 获取微信详细信息失败
 //        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(accessToken, openId);
+        String unionid = "";
         String userName = "";
         String headImgUrl = "";
         user = new User();
