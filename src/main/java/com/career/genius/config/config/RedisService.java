@@ -2,6 +2,7 @@ package com.career.genius.config.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @time 2019-08-27 18:52
  * @discription
  **/
+@Service
 public class RedisService {
 
     @Autowired
