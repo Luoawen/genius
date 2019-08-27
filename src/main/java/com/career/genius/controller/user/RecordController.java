@@ -15,10 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecordController {
 
 
+    /**
+     *
+     * @param times 停留时长，单位：秒
+     * @param title 页面标题
+     * @param url 统计的URL
+     * @return
+     */
     @ApiOperation(value = "统计页面停留时长")
     @PostMapping(value = "/record")
-    public EntityDto<String> record(String times, String referrer, String title, String url) {
-        log.info("times:{} referrer:{} title:{} url:{}", times, referrer, title, url);
+    public EntityDto<String> record(String times, String title, String url) {
+        log.info("times:{} title:{} url:{}", times, title, url);
 
         return new EntityDto<>(times, CodeEnum.Success.getCode(),"统计成功");
     }
