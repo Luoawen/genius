@@ -2,6 +2,7 @@ package com.career.genius.controller;
 
 import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
+import com.career.genius.config.config.RedisService;
 import com.career.genius.config.enumconf.UaType;
 import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.utils.Constants;
@@ -29,6 +30,9 @@ public class IndexController {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    RedisService redisService;
 
     @GetMapping(value = "/index")
     public String index(HttpServletRequest req, Model model) {
@@ -111,6 +115,13 @@ public class IndexController {
         String uagent = req.getHeader("user-agent");
         log.info("当前浏览器的user-agent:{}", uagent);
         return UaType.get(uagent.toLowerCase());
+    }
+
+    @GetMapping(value = "/fun")
+    public void foo() {
+        redisService.add("hello",123);
+
+        System.out.println(redisService.get("hello"));
     }
 
 }
