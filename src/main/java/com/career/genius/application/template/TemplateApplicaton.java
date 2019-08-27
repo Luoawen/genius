@@ -106,10 +106,6 @@ public class TemplateApplicaton {
     @Transactional
     public void addTemplateViewTimes(String viewId, String times) throws GeniusException {
         TemplateViews templateView = viewTemplateDao.findTemplateViewsById(viewId);
-
-        if (ObjectHelper.isEmpty(templateView)) {
-            throw new GeniusException("被浏览的模板记录不存在");
-        }
         templateView.changeTemplateViewTimes(times);
         viewTemplateDao.save(templateView);
     }
