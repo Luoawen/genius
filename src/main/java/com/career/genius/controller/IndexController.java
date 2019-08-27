@@ -53,7 +53,7 @@ public class IndexController {
         }
 
         String userId = "";
-        if (null == cookieUser) {
+        if (null != cookieUser) {
             userId = cookieUser.getUserId();
 //            WechatUtil.getJsSdkParameter(model, req, true);
         }
