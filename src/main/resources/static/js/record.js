@@ -1,22 +1,19 @@
-var start;
-var end;
-var times = 0;
 // 进入页面时间
-start = new Date();
+var start = new Date();
 
-// const eventName = $deviceTypeIs('ios') ? 'pagehide' : 'unload';
 // 监听刷新
 window.addEventListener('unload', (e) => {
     // 退出时间
-    end = new Date();
+    var end = new Date();
     times = end.getTime() - start.getTime();
-    // 取的是秒并且化整
-    times = Math.ceil(times / 1000);
+    // 停留时长，单位：秒
+    var times = Math.ceil(times / 1000);
     $.ajax({
         type: 'POST',
         async: false,
         url: '/record',
         data: {
+            viewsId, viewsId,
             times: times,
             title: document.title,
             url: window.location.href

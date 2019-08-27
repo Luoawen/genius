@@ -48,6 +48,7 @@
         $(function () {
             var userId = [[${userId}]];
             var templateId = getQueryString("templateId");
+            var viewsId = '';
             // alert('userId=' + userId + ',templateId' + templateId);
 
             var param = {
@@ -62,6 +63,7 @@
                 data: JSON.stringify(param),
                 success: function (data) {
                     var content = data.data.content;
+                    viewsId = 'xxx'; // 需要后端返回
                     var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
