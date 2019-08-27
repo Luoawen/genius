@@ -49,7 +49,6 @@
                 dataType: 'json',
                 data: JSON.stringify(param),
                 success: function (data) {
-                    // $('#userName').val(data.data.content);
                     var content = data.data.content;
                     var jsonArr = JSON.parse(content);
                     var all = "";

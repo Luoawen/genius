@@ -13,6 +13,7 @@ import com.career.genius.config.Exception.GeniusException;
 import com.career.genius.config.config.Config;
 import com.career.genius.domain.user.User;
 import com.career.genius.port.setvice.WxService;
+import com.career.genius.utils.StringUtil;
 import com.career.genius.utils.session.SessionUtil;
 import com.career.genius.utils.wechat.WXUtil;
 import com.career.genius.utils.wechat.WechatUtil;
@@ -68,9 +69,16 @@ public class WechatController {
 //        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccess_token(), wechatToken.getOpenId());
 //        dto.setWechatUserInfo(wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl());
 
-        User user = userApplication.getUserById(dto.getUserId());
-        if (user != null){
-            dto.setWechatUserInfo(user.getUserName(), user.getHeadImage());
+        String userId = dto.getUserId();
+        if (StringUtil.isNotEmpty(userId)) {
+            User user = userApplication.getUserById(userId);
+            if (user != null) {
+                dto.setWechatUserInfo(user.getUserName(), user.getHeadImage());
+            } else {
+                log.warn("userId:{} not eixsts!", userId);
+            }
+        } else {
+            log.warn("userId is empty!");
         }
         TemplateVO result = templateApplicaton.addViewInfo(dto);
         return new EntityDto<>(result, CodeEnum.Success.getCode(),"成功");

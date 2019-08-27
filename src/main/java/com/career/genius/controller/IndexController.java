@@ -2,6 +2,7 @@ package com.career.genius.controller;
 
 import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
+import com.career.genius.config.enumconf.UaType;
 import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.utils.Constants;
 import com.career.genius.utils.CookiesUtil;
@@ -14,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 请描述该类
@@ -35,20 +35,29 @@ public class IndexController {
         String sourceUrl = WechatUtil.getRequestUri(req);
         log.info("sourceUrl:{}", sourceUrl);
         CookieUser cookieUser = getCookieUser(req);
+
         if (null == cookieUser) {
-            String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
-            log.info("index redirectUrl:{}", redirectUrl);
-            return "redirect:" + redirectUrl;
+            UaType uaType = getUaType(req);
+            switch (uaType) {
+                case wechat: {
+                    // 微信浏览器
+                    String redirectUrl = getWechatOAuthUrl(req, sourceUrl);
+                    log.info("index redirectUrl:{}", redirectUrl);
+                    return "redirect:" + redirectUrl;
+                }
+                case other: {
+                    // 其他浏览器
+                    break;
+                }
+            }
         }
 
-        model.addAttribute("userId", cookieUser.getUserId());
-//        String phone = req.getParameter("phone");
-//        if (StringUtil.isEmpty(phone)){
-//            phone = "110";
-//        }
-//        model.addAttribute("phone", phone);
-
-        WechatUtil.getJsSdkParameter(model, req, true);
+        String userId = "";
+        if (null == cookieUser) {
+            userId = cookieUser.getUserId();
+//            WechatUtil.getJsSdkParameter(model, req, true);
+        }
+        model.addAttribute("userId", userId);
         return "index";
     }
 
@@ -95,6 +104,13 @@ public class IndexController {
 
         req.setAttribute("appId", Config.WX_APP_ID);
         return cookieUser;
+    }
+
+    private UaType getUaType(HttpServletRequest req) {
+        //如果开启用户调试模式 使用调试配置
+        String uagent = req.getHeader("user-agent");
+        log.info("当前浏览器的user-agent:{}", uagent);
+        return UaType.get(uagent.toLowerCase());
     }
 
 }
