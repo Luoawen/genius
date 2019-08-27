@@ -1,14 +1,11 @@
 package com.career.genius.application.user;
 
 import com.career.genius.application.user.dto.WechatUserInfoDto;
-import com.career.genius.application.wechat.bean.WechatOauth2Token;
-import com.career.genius.application.wechat.bean.WechatUserInfo;
 import com.career.genius.domain.user.User;
 import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.port.setvice.WxService;
 import com.usm.utils.ObjectHelper;
 import lombok.Data;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,11 +60,11 @@ public class UserApplication {
      * @return
      */
     public String getUserId(JSONObject weiXinOauth2Token, HttpServletRequest request) {
-        //TODO 创建用户
         log.info("weiXinOauth2Token:{}", weiXinOauth2Token);
 //        {"access_token":"24_Dk0Qxpzf4NYCX_r5sXDH9H8OnW38DQN309Qscu7cMVV4ZAqjIF0t1BHxZHiQ3loQukaMd18CszFZvIQPZALr1QBWkpW_L1Tpm95JiyvdHTk","expires_in":7200,"refresh_token":"24_iq5_SIsIrdCMVg5yDLtfL6PvFF4-RPHi1O2-OZ9rKrBQ1qWh9-R8dXo-nqHL2_IIBrwgB35yi3l5LyhoHtpm1AqgDDcA_LYWQqP9VP4DoIw","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_userinfo","unionid":"ogaZW5_sQo63fPjoYSv3P9holuUI"}
 //        WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
         String openId = weiXinOauth2Token.getString("openid");
+        String unionid = weiXinOauth2Token.getString("unionid");
         String accessToken = weiXinOauth2Token.getString("access_token");
         User user = userDao.findUserByOpenId(openId);
         //用户存在则直接返回用户ID
@@ -75,9 +72,12 @@ public class UserApplication {
             return user.getId();
         }
         //不存在生成用户
-        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(accessToken, openId);
+        //TODO 获取微信详细信息失败
+//        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(accessToken, openId);
+        String userName = "";
+        String headImgUrl = "";
         user = new User();
-        user.bindWechatUser(wechatUserInfo.getUnionid(),wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl(),wechatUserInfo.getOpenId());
+        user.bindWechatUser(unionid, userName, headImgUrl, openId);
         user = userDao.save(user);
         return user.getId();
     }
