@@ -35,12 +35,26 @@ public class TemplateViews extends BaseEntity {
     @Column(name = "view_times",columnDefinition = "int comment'浏览时常'")
     private long viewTimes;
 
+    /**
+     * @Author Marker
+     * @Date  添加模板被浏览记录
+     * @Discription
+     **/
     public void addViewInfo(String templateId,String viewUserOpenId,String viewUserName,String viewUserHeadImage) {
         this.templateId = templateId;
         this.viewUserOpenId = viewUserOpenId;
         this.viewUserName = viewUserName;
         this.viewUserHeadImage = viewUserHeadImage;
         super.setCreateTime(new Date());
+        super.setUpdateTime(new Date());
+    }
+
+    /**
+     * 设置浏览时长
+     * @param viewTimes
+     */
+    public void changeTemplateViewTimes(String viewTimes) {
+        this.viewTimes = Long.valueOf(viewTimes);
         super.setUpdateTime(new Date());
     }
 }

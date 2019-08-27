@@ -1,5 +1,7 @@
 package com.career.genius.controller.user;
 
+import com.career.genius.application.template.TemplateApplicaton;
+import com.career.genius.config.Exception.GeniusException;
 import com.career.genius.port.dao.template.ViewTemplateDao;
 import com.usm.enums.CodeEnum;
 import com.usm.vo.EntityDto;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "页面统计")
 public class RecordController {
 
+    @Autowired
+    TemplateApplicaton templateApplicaton;
+
 
     /**
      *
@@ -26,11 +31,10 @@ public class RecordController {
      */
     @ApiOperation(value = "统计页面停留时长")
     @PostMapping(value = "/record")
-    public EntityDto<String> record(String viewsId, String times, String title, String url) {
+    public EntityDto<String> record(String viewsId, String times, String title, String url) throws GeniusException {
         log.info("viewsId:{} times:{} title:{} url:{}", viewsId, times, title, url);
-
         //TODO 更新
-
+        templateApplicaton.addTemplateViewTimes(viewsId,times);
         return new EntityDto<>(times, CodeEnum.Success.getCode(),"统计成功");
     }
 

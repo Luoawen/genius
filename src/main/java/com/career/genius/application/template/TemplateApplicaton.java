@@ -80,6 +80,12 @@ public class TemplateApplicaton {
         templateDao.save(template);
     }
 
+    /**
+     * 添加模板被浏览数据
+     * @param dto
+     * @return
+     * @throws GeniusException
+     */
     @Transactional
     public TemplateVO addViewInfo(ViewTemplateDto dto) throws GeniusException {
         Template template = templateDao.findTemplateById(dto.getTemplateId());
@@ -91,5 +97,25 @@ public class TemplateApplicaton {
         viewTemplateDao.save(views);
         return templateQuery.getTemplateInfo(dto.getTemplateId());
     }
+
+    /**
+     * @Author Marker
+     * @Date  添加浏览时长
+     * @Discription
+     **/
+    @Transactional
+    public void addTemplateViewTimes(String viewId, String times) throws GeniusException {
+        TemplateViews templateView = viewTemplateDao.findTemplateViewsById(viewId);
+
+        if (ObjectHelper.isEmpty(templateView)) {
+            throw new GeniusException("被浏览的模板记录不存在");
+        }
+        templateView.changeTemplateViewTimes(times);
+        viewTemplateDao.save(templateView);
+    }
+
+
+
+
 
 }
