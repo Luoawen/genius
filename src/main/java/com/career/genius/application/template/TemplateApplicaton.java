@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Data
 public class TemplateApplicaton {
 
-    public static final String URI = "http://m.yunmaidianzi.com/wechat/share";
+    public static final String URI = "http://m.yunmaidianzi.com/index";
 
     @Autowired
     TemplateDao templateDao;
