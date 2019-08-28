@@ -51,7 +51,7 @@
 
             var param = {
                 'userId': userId,
-                'templateId': templateId
+                'templateId': '2c9242a76cc28961016ccd94209c0000'
             };
             $.ajax({
                 type: 'post',
@@ -68,6 +68,7 @@
                         all = all + currentValue.content + "<br/>";
                     }, this)
                     $("#content").html(all);
+                    //document.body.append(data);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");

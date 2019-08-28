@@ -1,6 +1,7 @@
 package com.career.genius.controller.wechat;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.career.genius.application.auth.dto.AuthUserInfoDto;
 import com.career.genius.application.template.TemplateApplicaton;
 import com.career.genius.application.template.dto.ViewTemplateDto;
@@ -25,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,6 +46,9 @@ public class WechatController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    RestTemplate restTemplate;
 
     @ApiOperation(value = "获取微信access_token和签名")
     @GetMapping("/sgture")
@@ -93,6 +98,7 @@ public class WechatController {
 
     @GetMapping(value = "/fun")
     public void foo() {
+        System.out.println(restTemplate.getForObject("http://m.yunmaidianzi.com/templates/2c9242a76aef6783016afc1571f10001", JSONObject.class));
         redisService.set("genius:hello","hello world");
         log.info(redisService.get("genius:hello").toString());
     }
