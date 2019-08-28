@@ -33,7 +33,7 @@ public class TemplateDto {
     private String titleImage;
 
     @ApiModelProperty(value = "移动端模板内容")
-    private List addContent;
+    private List appContent;
 
     @ApiModelProperty(value = "当前用户ID")
     private String userId;
