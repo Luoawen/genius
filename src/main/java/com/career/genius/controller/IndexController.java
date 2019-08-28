@@ -9,6 +9,7 @@ import com.career.genius.port.dao.user.UserDao;
 import com.career.genius.utils.Constants;
 import com.career.genius.utils.CookiesUtil;
 import com.career.genius.utils.wechat.WechatUtil;
+import com.google.gson.Gson;
 import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,8 @@ public class IndexController {
 
     @Autowired
     UserDao userDao;
-
+    @Autowired
+    RedisService redisService;
 
 
     @GetMapping(value = "/index")
@@ -81,23 +83,21 @@ public class IndexController {
         log.info("loginToken:{}", loginToken);
 
         CookieUser cookieUser = null;
-        //cookie 校验
+        // cookie 校验
         if (StringUtil.isNotEmpty(loginToken)) {
-//            cookieUser = AliOcsMemcachedUtil.getCache(loginToken, CookieUser.class);
-            // 模拟缓存
-            log.info("sumulate cached user");
-            cookieUser = new CookieUser("2c9242a76c2801cd016c4079ce09000d", Config.WX_APP_ID);
-            if (cookieUser != null){
+//            cookieUser = new CookieUser("2c9242a76c2801cd016c4079ce09000d", Config.WX_APP_ID);
+            if (redisService.exists(loginToken)){
+                cookieUser = new Gson().fromJson(redisService.get(loginToken).toString(), CookieUser.class);
                 String userId = cookieUser.getUserId();
                 User user = userDao.findUserById(userId);
                 if (user == null) {
                     CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
-//                    AliOcsMemcachedUtil.deleteCache(loginToken);
+                    redisService.remove(loginToken);
                     return null;
                 }
             } else {
                 CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.CURRENT_DOMAIN);
-//                AliOcsMemcachedUtil.deleteCache(loginToken);
+                redisService.remove(loginToken);
                 return null;
             }
         }

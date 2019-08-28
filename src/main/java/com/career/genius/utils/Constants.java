@@ -26,7 +26,7 @@ public class Constants {
     /**
      * 默认Cookies的maxAge
      */
-    public static final int DEFAULT_COOKIE_MAXAGE = 12*60*60;
+    public static final Integer DEFAULT_COOKIE_MAXAGE = 12*60*60;
 
     //请求致诚阿福群星接口地址
     public static String api_name = "credit.evaluation.share.api";

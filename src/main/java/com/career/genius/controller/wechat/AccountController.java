@@ -3,11 +3,13 @@ package com.career.genius.controller.wechat;
 import com.career.genius.application.user.UserApplication;
 import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
+import com.career.genius.config.config.RedisService;
 import com.career.genius.port.setvice.WxService;
 import com.career.genius.utils.Constants;
 import com.career.genius.utils.CookiesUtil;
 import com.career.genius.utils.StringUtil;
 import com.career.genius.utils.wechat.WechatUtil;
+import com.google.gson.Gson;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +31,9 @@ public class AccountController {
     private static Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
+    RedisService redisService;
+    @Autowired
     UserApplication userApplication;
-
 
     /**
      * 微信授权登录
@@ -53,7 +56,7 @@ public class AccountController {
                 if (StringUtil.isNotEmpty(userId)) {
                     String loginToken = WxService.genUUID();
                     CookieUser cookieUser = new CookieUser(userId, appId);
-//                    AliOcsMemcachedUtil.setToCache(loginToken, cookieUser);
+                    redisService.set(loginToken, new Gson().toJson(cookieUser), Constants.DEFAULT_COOKIE_MAXAGE.longValue());
                     // 获得配置cookie有效时长
                     int time = StringUtil.parseInt(Config.COOKIE_DOMAIN, Constants.DEFAULT_COOKIE_MAXAGE);
                     // 写入cookie
