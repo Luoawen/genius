@@ -1,12 +1,14 @@
 package com.career.genius.domain.template;
 
 import com.career.genius.domain.common.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 请描述该类
@@ -29,14 +31,26 @@ public class Template extends BaseEntity {
     @Column(name = "content",columnDefinition = "text comment'模板详情'")
     private String content;
 
-    @Column(name = "template_name",columnDefinition = "text comment'模板名称'")
+    @Column(name = "template_name",columnDefinition = "varchat(255) comment'模板名称'")
     private String templateName;
 
+    @Column(name = "description",columnDefinition = "varchat(255) comment'模板内容描述'")
+    private String description;
 
-    public void addTemplate(String title,String content,String userId) {
+    @Column(name = "title_image",columnDefinition = "varchat(255) comment'分享链接带的图片'")
+    private String titleImage;
+
+    @Column(name = "app_content",columnDefinition = "text comment'移动端模板内容'")
+    private String appContent;
+
+
+    public void addTemplate(String title,String content,String userId,String description, String titleImage, String appContent) {
         this.title = title;
         this.content = content;
         this.userId = userId;
+        this.description = description;
+        this.titleImage = titleImage;
+        this.appContent = appContent;
         super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }

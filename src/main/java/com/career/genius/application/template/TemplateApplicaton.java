@@ -50,7 +50,7 @@ public class TemplateApplicaton {
     @Transactional
     public TemplateDto addTemplate(TemplateDto dto) {
         Template template = new Template();
-        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId());
+        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(),dto.getContent());
         template = templateDao.save(template);
         TemplateDto result = new TemplateDto();
         result.setTemplateId(template.getId());

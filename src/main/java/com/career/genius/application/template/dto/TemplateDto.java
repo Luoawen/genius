@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 请描述该类
  *
@@ -23,6 +25,15 @@ public class TemplateDto {
 
     @ApiModelProperty(value = "模板内容")
     private String content;
+
+    @ApiModelProperty(value = "模板内容描述")
+    private String description;
+
+    @ApiModelProperty(value = "分享链接带的图片")
+    private String titleImage;
+
+    @ApiModelProperty(value = "移动端模板内容")
+    private List addContent;
 
     @ApiModelProperty(value = "当前用户ID")
     private String userId;
