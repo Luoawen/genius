@@ -11,6 +11,7 @@ import com.career.genius.application.wechat.vo.WechatAuthVO;
 import com.career.genius.application.wechat.vo.WechatShareVO;
 import com.career.genius.config.Exception.GeniusException;
 import com.career.genius.config.config.Config;
+import com.career.genius.config.config.RedisService;
 import com.career.genius.domain.user.User;
 import com.career.genius.port.setvice.WxService;
 import com.career.genius.utils.StringUtil;
@@ -40,6 +41,9 @@ public class WechatController {
 
     @Autowired
     WxService wxService;
+
+    @Autowired
+    RedisService redisService;
 
     @ApiOperation(value = "获取微信access_token和签名")
     @GetMapping("/sgture")
@@ -87,7 +91,11 @@ public class WechatController {
 
 
 
-
+    @GetMapping(value = "/fun")
+    public void foo() {
+        redisService.set("hello",123);
+        log.info(redisService.get("hello").toString());
+    }
     /*@GetMapping(value = "/share")
     public EntityDto<String> wechatOpen(String userId,HttpServletRequest request) {
         WxService.authorize()

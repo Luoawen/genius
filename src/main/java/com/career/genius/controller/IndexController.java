@@ -33,8 +33,7 @@ public class IndexController {
     @Autowired
     UserDao userDao;
 
-    @Autowired
-    RedisService redisService;
+
 
     @GetMapping(value = "/index")
     public String index(HttpServletRequest req, HttpServletResponse resp, Model model) {
@@ -118,12 +117,4 @@ public class IndexController {
     public void clearCookie(HttpServletRequest req, HttpServletResponse resp){
         CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.COOKIE_DOMAIN);
     }
-
-    @GetMapping(value = "/fun")
-    public void foo() {
-        redisService.set("hello",123);
-
-        System.out.println(redisService.get("hello"));
-    }
-
 }
