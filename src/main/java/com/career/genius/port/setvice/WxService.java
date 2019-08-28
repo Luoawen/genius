@@ -57,7 +57,7 @@ public class WxService {
     private static  Logger log = LoggerFactory.getLogger(WxService.class);
 
 
-
+    //TODO
     @Resource
     RestTemplate restTemplate;
 

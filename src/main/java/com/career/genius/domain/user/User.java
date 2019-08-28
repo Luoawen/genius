@@ -64,6 +64,7 @@ public class User extends BaseEntity {
         this.userName = userName;
         this.headImage = headImage;
         this.openId = openId;
+        super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }
 

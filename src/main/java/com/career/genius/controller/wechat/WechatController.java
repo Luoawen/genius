@@ -74,6 +74,7 @@ public class WechatController {
             User user = userApplication.getUserById(userId);
             if (user != null) {
                 dto.setWechatUserInfo(user.getUserName(), user.getHeadImage());
+                dto.setViewUserOpenId(user.getOpenId());
             } else {
                 log.warn("userId:{} not eixsts!", userId);
             }
