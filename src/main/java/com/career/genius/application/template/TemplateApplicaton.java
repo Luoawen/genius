@@ -12,6 +12,7 @@ import com.career.genius.port.dao.template.ViewTemplateDao;
 import com.career.genius.port.dao.user.UserDao;
 import com.usm.utils.ObjectHelper;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  **/
 @Service
 @Data
+@Slf4j
 public class TemplateApplicaton {
 
     public static final String URI = "http://m.yunmaidianzi.com/index";
@@ -55,6 +57,7 @@ public class TemplateApplicaton {
         TemplateDto result = new TemplateDto();
         result.setTemplateId(template.getId());
         result.setUrl(URI + "?userId=" + dto.getUserId() + "&templateId=" + template.getId());
+        log.error(result.toString());
         return result;
     }
 
