@@ -119,7 +119,7 @@ public class IndexController {
 
     @GetMapping(value = "/fun")
     public void foo() {
-        redisService.add("hello",123);
+        redisService.set("hello",123);
 
         System.out.println(redisService.get("hello"));
     }
