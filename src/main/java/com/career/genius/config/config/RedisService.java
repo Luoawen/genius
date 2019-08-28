@@ -1,7 +1,10 @@
 package com.career.genius.config.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -21,6 +24,23 @@ public class RedisService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    static {
+
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> stringSerializerRedisTemplate() {
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        redisTemplate.setKeySerializer(stringSerializer);
+        redisTemplate.setValueSerializer(stringSerializer);
+        redisTemplate.setHashKeySerializer(stringSerializer);
+        redisTemplate.setHashValueSerializer(stringSerializer);
+        return redisTemplate;
+    }
+
+
+
     /**
      * 写入缓存
      * @param key

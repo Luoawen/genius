@@ -93,8 +93,8 @@ public class WechatController {
 
     @GetMapping(value = "/fun")
     public void foo() {
-        redisService.set("hello",123);
-        log.info(redisService.get("hello").toString());
+        redisService.set("genius:hello","hello world");
+        log.info(redisService.get("genius:hello").toString());
     }
     /*@GetMapping(value = "/share")
     public EntityDto<String> wechatOpen(String userId,HttpServletRequest request) {
