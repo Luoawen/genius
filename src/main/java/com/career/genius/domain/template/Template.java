@@ -31,13 +31,13 @@ public class Template extends BaseEntity {
     @Column(name = "content",columnDefinition = "text comment'模板详情'")
     private String content;
 
-    @Column(name = "template_name",columnDefinition = "varchat(255) comment'模板名称'")
+    @Column(name = "template_name",columnDefinition = "varchar(255) comment'模板名称'")
     private String templateName;
 
-    @Column(name = "description",columnDefinition = "varchat(255) comment'模板内容描述'")
+    @Column(name = "description",columnDefinition = "varchar(255) comment'模板内容描述'")
     private String description;
 
-    @Column(name = "title_image",columnDefinition = "varchat(255) comment'分享链接带的图片'")
+    @Column(name = "title_image",columnDefinition = "varchar(255) comment'分享链接带的图片'")
     private String titleImage;
 
     @Column(name = "app_content",columnDefinition = "text comment'移动端模板内容'")
