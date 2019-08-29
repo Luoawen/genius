@@ -35,7 +35,7 @@ public class TemplateViews extends BaseEntity {
     @Column(name = "view_times",columnDefinition = "int comment'浏览次数'")
     private int viewTimes;
 
-    @Column(name = "view_times",columnDefinition = "int comment'浏览时常'")
+    @Column(name = "view_duration",columnDefinition = "int comment'浏览时常'")
     private long viewDuration;
 
     /**
