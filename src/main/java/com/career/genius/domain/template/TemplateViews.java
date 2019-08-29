@@ -32,8 +32,11 @@ public class TemplateViews extends BaseEntity {
     @Column(name = "view_user_head_image",columnDefinition = "varchar(50) comment'浏览者头像'")
     private String viewUserHeadImage;
 
+    @Column(name = "view_times",columnDefinition = "int comment'浏览次数'")
+    private int viewTimes;
+
     @Column(name = "view_times",columnDefinition = "int comment'浏览时常'")
-    private long viewTimes;
+    private long viewDuration;
 
     /**
      * @Author Marker
@@ -45,16 +48,26 @@ public class TemplateViews extends BaseEntity {
         this.viewUserOpenId = viewUserOpenId;
         this.viewUserName = viewUserName;
         this.viewUserHeadImage = viewUserHeadImage;
+        this.viewTimes = 0;
         super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }
 
     /**
-     * 设置浏览时长
-     * @param viewTimes
+     * 设置浏览时常
      */
-    public void changeTemplateViewTimes(String viewTimes) {
-        this.viewTimes = Long.valueOf(viewTimes);
+    public void changeTemplateViewDuration(String viewDuration) {
+        this.viewDuration = Long.valueOf(viewDuration);
+        super.setUpdateTime(new Date());
+    }
+
+    /**
+     * @Author Marker
+     * @Date  添加浏览次数
+     * @Discription
+     **/
+    public void addViewTimes() {
+        ++ this.viewTimes;
         super.setUpdateTime(new Date());
     }
 }

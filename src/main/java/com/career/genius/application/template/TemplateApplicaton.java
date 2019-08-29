@@ -95,8 +95,13 @@ public class TemplateApplicaton {
         if (ObjectHelper.isEmpty(template)) {
             throw new GeniusException("模板不存在！");
         }
-        TemplateViews views = new TemplateViews();
-        views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage());
+        TemplateViews views = viewTemplateDao.findTemplateViewsByViewUserOpenIdAndTemplateId(dto.getViewUserOpenId(), dto.getTemplateId());
+        if (ObjectHelper.isNotEmpty(views)) {
+            views.addViewTimes();
+        } else {
+            views = new TemplateViews();
+            views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage());
+        }
         views = viewTemplateDao.save(views);
         TemplateVO templateVO = templateQuery.getTemplateInfo(dto.getTemplateId());
         templateVO.setViewId(views.getId());
@@ -112,7 +117,7 @@ public class TemplateApplicaton {
     public void updateTemplateViewTimes(String viewId, String times) throws GeniusException {
         TemplateViews templateView = viewTemplateDao.findTemplateViewsById(viewId);
         if (templateView != null) {
-            templateView.changeTemplateViewTimes(times);
+            templateView.changeTemplateViewDuration(times);
             viewTemplateDao.save(templateView);
         }
     }

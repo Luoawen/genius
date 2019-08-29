@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +43,7 @@ public class IndexController {
         String sourceUrl = WechatUtil.getRequestUri(req);
         log.info("sourceUrl:{}", sourceUrl);
         CookieUser cookieUser = getCookieUser(req, resp);
-
+        System.out.println(req.getParameter("templateId"));
         if (null == cookieUser) {
             UaType uaType = getUaType(req);
             switch (uaType) {
@@ -64,6 +65,7 @@ public class IndexController {
             userId = cookieUser.getUserId();
 //            WechatUtil.getJsSdkParameter(model, req, true);
         }
+        model.addAttribute("templateId",req.getParameter("templateId"));
         model.addAttribute("userId", userId);
         return "index";
     }
@@ -117,4 +119,5 @@ public class IndexController {
     public void clearCookie(HttpServletRequest req, HttpServletResponse resp){
         CookiesUtil.removeCookie(req, resp, Constants.COOKIE_PARAM, Config.COOKIE_DOMAIN);
     }
+
 }
