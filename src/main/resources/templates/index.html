@@ -46,8 +46,9 @@
 
         $(function () {
             var userId = [[${userId}]];
-            var templateId = getQueryString("templateId");
-            // alert('userId=' + userId + ',templateId' + templateId);
+            //var templateId = getQueryString("templateId");
+            var templateId = [[${templateId}]];
+             alert('userId=' + userId + ',templateId' + templateId);
 
             var param = {
                 'userId': userId,
