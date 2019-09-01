@@ -43,14 +43,18 @@ public class Template extends BaseEntity {
     @Column(name = "app_content",columnDefinition = "text comment'移动端模板内容'")
     private String appContent;
 
+    @Column(name = "content_type",columnDefinition = "int comment'内容类型<1:链接  2：文本>'")
+    private Integer contentType;
 
-    public void addTemplate(String title,String content,String userId,String description, String titleImage, String appContent) {
+
+    public void addTemplate(String title,String content,String userId,String description, String titleImage, String appContent,Integer contentType) {
         this.title = title;
         this.content = content;
         this.userId = userId;
         this.description = description;
         this.titleImage = titleImage;
         this.appContent = appContent;
+        this.contentType = contentType;
         super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }

@@ -48,7 +48,7 @@ public class TemplateViews extends BaseEntity {
         this.viewUserOpenId = viewUserOpenId;
         this.viewUserName = viewUserName;
         this.viewUserHeadImage = viewUserHeadImage;
-        this.viewTimes = 0;
+        this.viewTimes = 1;
         super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }

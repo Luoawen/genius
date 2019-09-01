@@ -41,4 +41,7 @@ public class TemplateDto {
     @ApiModelProperty(value = "分享路径")
     private String url;
 
+    @ApiModelProperty(value = "内容类型<1:链接  2：文本>")
+    private Integer contentType;
+
 }

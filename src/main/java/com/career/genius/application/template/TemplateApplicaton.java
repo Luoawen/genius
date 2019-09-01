@@ -52,12 +52,16 @@ public class TemplateApplicaton {
     @Transactional
     public TemplateDto addTemplate(TemplateDto dto) {
         Template template = new Template();
-        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(),"");
+        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(),dto.getAppContent().toString(),dto.getContentType());
         template = templateDao.save(template);
         TemplateDto result = new TemplateDto();
         result.setTemplateId(template.getId());
-        result.setUrl(URI + "?userId=" + dto.getUserId() + "&templateId=" + template.getId());
-        log.error(result.toString());
+        String urlParam = "?userId=" + dto.getUserId() + "&templateId=" + template.getId();
+        if (dto.getContentType() == 1) {
+            result.setUrl(dto.getContent() + urlParam);
+        } else {
+            result.setUrl(URI + urlParam);
+        }
         return result;
     }
 
