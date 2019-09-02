@@ -44,4 +44,11 @@ public class TemplateDto {
     @ApiModelProperty(value = "内容类型<1:链接  2：文本>")
     private Integer contentType;
 
+    public void setResult(String templateId, String userId, String url, String description, String titleImage) {
+        this.templateId = templateId;
+        this.userId = userId;
+        this.url = url;
+        this.description = description;
+        this.titleImage = titleImage;
+    }
 }
