@@ -32,7 +32,7 @@ public class TemplateQuery {
 
     public TemplateVO getTemplateInfo(String templateId) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT id, template_name, title, content, create_time, update_time ");
+        sql.append(" SELECT id, template_name, title, content, create_time, update_time,content_type ");
         sql.append(" FROM app_template ");
         sql.append(" WHERE id = ? ");
         TemplateVO templateVO = supportJdbcTemplate.queryForDto(sql.toString(), TemplateVO.class, templateId);

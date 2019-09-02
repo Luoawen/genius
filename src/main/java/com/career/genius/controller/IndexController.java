@@ -1,5 +1,7 @@
 package com.career.genius.controller;
 
+import com.career.genius.application.template.TemplateApplicaton;
+import com.career.genius.application.template.query.TemplateQuery;
 import com.career.genius.application.user.dto.CookieUser;
 import com.career.genius.config.config.Config;
 import com.career.genius.config.config.RedisService;
@@ -36,6 +38,12 @@ public class IndexController {
     UserDao userDao;
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    TemplateApplicaton templateApplicaton;
+
+    @Autowired
+    TemplateQuery templateQuery;
 
 
     @GetMapping(value = "/index")

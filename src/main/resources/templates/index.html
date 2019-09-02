@@ -63,13 +63,20 @@
                 success: function (data) {
                     var content = data.data.content;
                     viewsId = data.data.viewId;
+                    var contentType = data.data.contentType;
                     alert(content);
                     /*var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
                         all = all + currentValue.content + "<br/>";
                     }, this)*/
-                    $("#content").html(content);
+                    if (contentType === 1) {
+                        var temp = '<iframe src= "http://' + content + '" height="100%" width="100%" align="center"></iframe>';
+                        $("#content").html(temp);
+                    } else {
+                        $("#content").html(content);
+                    }
+
 
                     //document.body.append(all);
 
@@ -86,6 +93,7 @@
 <body>
 <!--<div>当前页面停留时间：<span id="yy004" >0时0分0秒</span></div>
 <p th:text="'Hello, ' + ${userId} + '!'" />-->
-<div id="content"></div>
+
+<div id="content" style="width: 100%;height: 1000px; align-content: center" ></div>
 </body>
 </html>

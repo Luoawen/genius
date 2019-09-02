@@ -46,4 +46,7 @@ public class TemplateVO {
     @ApiModelProperty(value = "浏览记录ID")
     @ColumnAlias(value = "viewId")
     private String viewId;
+
+    @ColumnAlias(value = "content_type")
+    private Integer contentType;
 }
