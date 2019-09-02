@@ -53,7 +53,7 @@
                 var state = GWC.urlParams['state'];
                 var redirectUri;
                 console.log('code=' + code + ',appId=' + appId + ',scope=' + scope + ',state=' + state);
-                alert('code=' + code + ',appId=' + appId + ',scope=' + scope + ',state=' + state);
+               // alert('code=' + code + ',appId=' + appId + ',scope=' + scope + ',state=' + state);
                 if (!code) {
                     //第一步，没有拿到code，跳转至微信授权页面获取code
                     redirectUri = GWC.appendParams('https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect', {
@@ -70,7 +70,7 @@
                         'state': state
                     });
                 }
-                alert('redirectUri=' + redirectUri);
+                //alert('redirectUri=' + redirectUri);
                 location.href = redirectUri;
             }
         };

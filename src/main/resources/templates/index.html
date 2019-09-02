@@ -63,13 +63,16 @@
                 success: function (data) {
                     var content = data.data.content;
                     viewsId = data.data.viewId;
-                    var jsonArr = JSON.parse(content);
+                    alert(content);
+                    /*var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
                         all = all + currentValue.content + "<br/>";
-                    }, this)
-                    $("#content").html(all);
-                    //document.body.append(data);
+                    }, this)*/
+                    $("#content").html(content);
+
+                    //document.body.append(all);
+
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");

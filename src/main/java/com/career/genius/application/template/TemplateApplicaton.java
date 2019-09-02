@@ -56,12 +56,7 @@ public class TemplateApplicaton {
         template = templateDao.save(template);
         TemplateDto result = new TemplateDto();
         result.setTemplateId(template.getId());
-        String urlParam = "?userId=" + dto.getUserId() + "&templateId=" + template.getId();
-        if (dto.getContentType() == 1) {
-            result.setUrl(dto.getContent() + urlParam);
-        } else {
-            result.setUrl(URI + urlParam);
-        }
+        result.setUrl(URI + "?userId=" + dto.getUserId() + "&templateId=" + template.getId());
         return result;
     }
 

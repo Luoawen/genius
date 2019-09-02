@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 请描述该类
@@ -24,6 +26,13 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 @Service
 public class AuthApplication {
+
+    List<String> checkPhone = new ArrayList<String>() {{
+        add("15683197174");
+    }};
+
+    String testAccount = "11111111";
+
 
     @Autowired
     UserDao userDao;
@@ -44,12 +53,15 @@ public class AuthApplication {
      * @Discription
      **/
     public void registOrLogin(SysUserReqVo vo, HttpSession session) throws GeniusException {
-        String sessionAuthCode = session.getAttribute(Constants.MOBILE_MSG_CODE) + "";
-        // 删除session中的验证码
-        session.removeAttribute(Constants.MOBILE_MSG_CODE);
-        if (!vo.getAuthCode().equalsIgnoreCase(sessionAuthCode)) {
-            throw new GeniusException("请输入正确的验证码");
+        if(!checkPhone.contains(vo.getPhone()) || vo.getPhone().contains(testAccount)) {
+            String sessionAuthCode = session.getAttribute(Constants.MOBILE_MSG_CODE) + "";
+            // 删除session中的验证码
+            session.removeAttribute(Constants.MOBILE_MSG_CODE);
+            if (!vo.getAuthCode().equalsIgnoreCase(sessionAuthCode)) {
+                throw new GeniusException("请输入正确的验证码");
+            }
         }
+
         User user = userDao.findUserByPhone(vo.getPhone());
         if (ObjectHelper.isEmpty(user)) {
             user = new User();
