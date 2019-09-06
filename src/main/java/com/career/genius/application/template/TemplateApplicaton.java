@@ -1,5 +1,6 @@
 package com.career.genius.application.template;
 
+import com.alibaba.fastjson.JSON;
 import com.career.genius.application.template.dto.TemplateDto;
 import com.career.genius.application.template.dto.ViewTemplateDto;
 import com.career.genius.application.template.query.TemplateQuery;
@@ -52,7 +53,7 @@ public class TemplateApplicaton {
     @Transactional
     public TemplateDto addTemplate(TemplateDto dto) {
         Template template = new Template();
-        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(),dto.getAppContent().toString(),dto.getContentType());
+        template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(), JSON.toJSONString(dto.getAppContent()),dto.getContentType());
         template = templateDao.save(template);
         TemplateDto result = new TemplateDto();
         result.setResult(template.getId(),dto.getUserId(),URI + "?userId=" + dto.getUserId() + "&templateId=" + template.getId(),dto.getDescription(),dto.getTitleImage());
