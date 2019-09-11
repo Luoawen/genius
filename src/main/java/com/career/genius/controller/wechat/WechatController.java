@@ -25,6 +25,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -94,19 +96,11 @@ public class WechatController {
         return new EntityDto<>(result, CodeEnum.Success.getCode(),"成功");
     }
 
+    @GetMapping
+    public ResponseEntity<Object> checkWechatSigh() {
 
-
-    @GetMapping(value = "/fun")
-    public void foo() {
-        System.out.println(restTemplate.getForObject("http://m.yunmaidianzi.com/templates/2c9242a76aef6783016afc1571f10001", JSONObject.class));
-        redisService.set("genius:hello","hello world");
-        log.info(redisService.get("genius:hello").toString());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    /*@GetMapping(value = "/share")
-    public EntityDto<String> wechatOpen(String userId,HttpServletRequest request) {
-        WxService.authorize()
-        return new EntityDto<>("", CodeEnum.Success.getCode(),"成功");
-    }*/
 
 
 

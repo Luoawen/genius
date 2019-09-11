@@ -77,7 +77,7 @@ public class WxService {
 
     public WechatUserInfo getWechatInfoByTokenAndOpenId(String token, String openId) {
         String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + token + "&openid=" + openId + "&lang=zh_CN";
-        JSONObject result = restTemplate.getForObject(url, JSONObject.class);
+        JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
         if (ObjectHelper.isNotEmpty(result)) {
             if (ObjectHelper.isNotEmpty(result.get("errcode"))) {
                 throw new ResicoException("微信授权异常");

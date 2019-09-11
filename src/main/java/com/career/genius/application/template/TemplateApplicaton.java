@@ -8,6 +8,7 @@ import com.career.genius.application.template.vo.TemplateVO;
 import com.career.genius.config.Exception.GeniusException;
 import com.career.genius.domain.template.Template;
 import com.career.genius.domain.template.TemplateViews;
+import com.career.genius.domain.user.User;
 import com.career.genius.port.dao.template.TemplateDao;
 import com.career.genius.port.dao.template.ViewTemplateDao;
 import com.career.genius.port.dao.user.UserDao;
@@ -99,10 +100,16 @@ public class TemplateApplicaton {
             views.addViewTimes();
         } else {
             views = new TemplateViews();
-            views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage());
+            views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage(),dto.getUserId());
         }
         views = viewTemplateDao.save(views);
         TemplateVO templateVO = templateQuery.getTemplateInfo(dto.getTemplateId());
+        User user = userDao.findUserByOpenId(dto.getViewUserOpenId());
+        if (ObjectHelper.isEmpty(user)) {
+            user = new User();
+            user.addUser(dto.getViewUserName(),"",dto.getViewUserHeadImage(),dto.getViewUserOpenId(),"");
+            userDao.save(user);
+        }
         templateVO.setViewId(views.getId());
         return templateVO;
     }
