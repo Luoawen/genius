@@ -23,7 +23,7 @@ public class WechatUtil {
     /**
      * 不弹出授权页面，直接跳转，只能获取用户openid
      */
-    public static final String SCOPESNSAPIBASE = "snsapi_base";
+    //public static final String SCOPESNSAPIBASE = "snsapi_base";
     /**
      * 弹出用户授权页面，可获取客户其他信息
      */

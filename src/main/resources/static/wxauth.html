@@ -49,7 +49,7 @@
             doRedirect: function () {
                 var code = GWC.urlParams['code'];
                 var appId = GWC.urlParams['appid'];
-                var scope = GWC.urlParams['scope'] || 'snsapi_base';
+                var scope = GWC.urlParams['scope'] || 'snsapi_userinfo';
                 var state = GWC.urlParams['state'];
                 var redirectUri;
                 console.log('code=' + code + ',appId=' + appId + ',scope=' + scope + ',state=' + state);
