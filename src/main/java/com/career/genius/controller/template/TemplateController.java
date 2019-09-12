@@ -75,8 +75,8 @@ public class TemplateController {
 
     @ApiOperation(value = "获取模板列表")
     @GetMapping(value = "/templates/{userId}")
-    public ListDto<TemplateVO> getTemplateList(@PathVariable("userId") String userId) {
-        List<TemplateVO> templateList = templateQuery.getTemplateList(userId);
+    public ListDto<TemplateVO> getTemplateList(@PathVariable("userId") String userId, String query) {
+        List<TemplateVO> templateList = templateQuery.getTemplateList(userId,query);
         return new ListDto<>(templateList,CodeEnum.Success.getCode(),"成功");
     }
 }
