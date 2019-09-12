@@ -3,12 +3,15 @@ package com.career.genius.controller.template;
 import com.career.genius.application.template.TemplateApplicaton;
 import com.career.genius.application.template.dto.TemplateDto;
 import com.career.genius.application.template.query.TemplateQuery;
+import com.career.genius.application.template.vo.TemplateDetailVO;
 import com.career.genius.application.template.vo.TemplateVO;
+import com.career.genius.application.template.vo.TemplateViewInfoVO;
 import com.career.genius.config.Exception.GeniusException;
 import com.usm.enums.CodeEnum;
 import com.usm.vo.BaseResultDto;
 import com.usm.vo.EntityDto;
 import com.usm.vo.ListDto;
+import com.usm.vo.PageDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
@@ -71,6 +74,19 @@ public class TemplateController {
     public BaseResultDto deleteTemplate(@PathVariable("templateId") String templateId) throws GeniusException {
         templateApplicaton.deleteTemplate(templateId);
         return new BaseResultDto(CodeEnum.Success.getCode(),"修改模板成功");
+    }
+
+    @ApiOperation(value = "获取用户模板浏览总数据")
+    @GetMapping(value = "/templates/{templateId}/view")
+    public EntityDto<TemplateViewInfoVO> getTemplateViewInfo(@PathVariable("templateId") String templateId) {
+        TemplateViewInfoVO viewInfo = templateQuery.getTemplateViewInfo(templateId);
+        return new EntityDto<>(viewInfo,CodeEnum.Success.getCode(),"成功");
+    }
+
+    @ApiOperation(value = "获取用户模板浏览数据分页")
+    @GetMapping(value = "/templates/{templateId}/view/page")
+    public PageDto<TemplateDetailVO> getTemplateViewPage(@PathVariable("templateId") String templateId) {
+        return templateQuery.getTemplateViewDetail(templateId);
     }
 
     @ApiOperation(value = "获取模板列表")

@@ -2,6 +2,7 @@ package com.career.genius.application.template.vo;
 
 import com.alibaba.fastjson.JSONArray;
 import com.career.genius.utils.jdbcframework.ColumnAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.usm.utils.ObjectHelper;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -36,10 +37,12 @@ public class TemplateVO {
     @ColumnAlias(value = "app_content")
     private String content;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
     @ColumnAlias(value = "create_time")
     private Date createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "更新时间")
     @ColumnAlias(value = "update_time")
     private Date updateTime;
@@ -73,7 +76,7 @@ public class TemplateVO {
     @ColumnAlias(value = "total")
     private Long total;
 
-    @ApiModelProperty(value = "仅七天浏览量")
+    @ApiModelProperty(value = "近七天浏览量")
     @ColumnAlias(value = "seven")
     private Long seven;
 

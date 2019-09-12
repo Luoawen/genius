@@ -1,8 +1,12 @@
 package com.career.genius.application.template.query;
 
+import com.career.genius.application.template.vo.TemplateDetailVO;
 import com.career.genius.application.template.vo.TemplateVO;
+import com.career.genius.application.template.vo.TemplateViewInfoVO;
+import com.career.genius.utils.common.PageQuery;
 import com.career.genius.utils.jdbcframework.SupportJdbcTemplate;
 import com.usm.utils.ObjectHelper;
+import com.usm.vo.PageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -48,6 +52,7 @@ public class TemplateQuery {
             sql.append(" AND t.app_content LIKE ? ");
             param.add("%" + query + "%");
         }
+        sql.append(" ORDER BY t.create_time DESC ");
         List<TemplateVO> result = supportJdbcTemplate.queryForList(sql.toString(), TemplateVO.class, param.toArray());
         return result;
     }
@@ -59,5 +64,29 @@ public class TemplateQuery {
         sql.append(" WHERE id = ? ");
         TemplateVO templateVO = supportJdbcTemplate.queryForDto(sql.toString(), TemplateVO.class, templateId);
         return templateVO;
+    }
+
+    public TemplateViewInfoVO getTemplateViewInfo(String templateId) {
+        StringBuffer sql = new StringBuffer();
+
+        sql.append(" SELECT SUM(view_duration) totalDuration, SUM(view_times) totalTimes, t1.totalPerson ");
+        sql.append(" FROM template_views t ");
+        sql.append(" INNER JOIN (SELECT COUNT(1) totalPerson FROM template_views WHERE is_delete = 0 AND template_id = ?) t1 ");
+        sql.append(" WHERE t.is_delete = 0 AND t.template_id = ?");
+
+        return supportJdbcTemplate.queryForDto(sql.toString(),TemplateViewInfoVO.class,templateId,templateId);
+    }
+
+    public PageDto<TemplateDetailVO> getTemplateViewDetail(String templateId) {
+        StringBuffer sql = new StringBuffer();
+        ArrayList<Object> param = new ArrayList<>();
+        sql.append(" SELECT v.template_id, v.view_times, v.view_user_head_image, v.view_user_name, v.view_user_openid, v.view_duration, ");
+        sql.append(" v.create_time, v.update_time ");
+        sql.append(" FROM template_views v ");
+        sql.append(" WHERE v.is_delete = 0 AND v.template_id = ? ");
+        param.add(templateId);
+        sql.append(" ORDER BY v.create_time DESC ");
+        PageQuery query = new PageQuery();
+        return this.supportJdbcTemplate.queryForPage(sql,TemplateDetailVO.class,param,query);
     }
 }

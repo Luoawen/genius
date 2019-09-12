@@ -3,6 +3,7 @@ package com.career.genius.utils.jdbcframework;
 
 /*import com.resico.crm.utils.common.PageQuery;
 import com.resico.crm.utils.common.QuerySqlUtils;*/
+import com.career.genius.utils.common.PageQuery;
 import com.usm.enums.CodeEnum;
 import com.usm.vo.PageDto;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class SupportJdbcTemplate {
         return this.jdbcTemplate().query(sql, args, argTypes, (rs, rowNum) -> (new BeanProcessor()).toBean(rs, beanType));
     }
 
-   /* public <T> PageDto<T> queryForPage(StringBuffer sql, final Class<T> beanType, List param, PageQuery queryParam) {
+    public <T> PageDto<T> queryForPage(StringBuffer sql, final Class<T> beanType, List param, PageQuery queryParam) {
         PageDto<T> result = new PageDto<>();
         Integer total = countAll(sql.toString(), param);
         result.setTotal(total);
@@ -74,7 +75,7 @@ public class SupportJdbcTemplate {
         result.setCode(CodeEnum.Success.getCode());
         result.setMsg("成功");
         return result;
-    }*/
+    }
 
     /**
      * @Author Marker
