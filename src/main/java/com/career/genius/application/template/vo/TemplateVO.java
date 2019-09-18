@@ -34,8 +34,12 @@ public class TemplateVO {
     private String title;
 
     @ApiModelProperty(value = "模板内容")
-    @ColumnAlias(value = "app_content")
+    @ColumnAlias(value = "content")
     private String content;
+
+    @ApiModelProperty(value = "app模板内容")
+    @ColumnAlias(value = "app_content")
+    private String appContent;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
@@ -80,12 +84,13 @@ public class TemplateVO {
     @ColumnAlias(value = "seven")
     private Long seven;
 
-    public JSONArray getContent() {
-        if (ObjectHelper.isNotEmpty(this.content)) {
-            return JSONArray.parseArray(this.content);
+    public JSONArray getAppContent() {
+        if (ObjectHelper.isNotEmpty(this.appContent)) {
+            return JSONArray.parseArray(this.appContent);
         }
         return null;
     }
+
 
 
     public Long getToday() {

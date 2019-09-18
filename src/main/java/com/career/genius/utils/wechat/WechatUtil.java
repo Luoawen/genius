@@ -41,7 +41,7 @@ public class WechatUtil {
 
     public static WechatDto getWinXinEntity(String url) {
         WechatDto wx = new WechatDto();
-//        String access_token = getAccessToken();
+       // String access_token = getAccessToken();
         String access_token = ""; // test
         String ticket = getTicket(access_token);
         Map<String, String> ret = Sign.sign(ticket, url);
@@ -93,11 +93,11 @@ public class WechatUtil {
      */
     public static JSONObject getAccessToken(String appId, String secret, String code) {
 //        String access_token = "";
-//        String grant_type = "client_credential";//获取access_token填写client_credential
+        String grant_type = "client_credential";//获取access_token填写client_credential
 //        String AppId = Config.WX_APP_ID;//第三方用户唯一凭证
 //        String secret = Config.WX_APP_SECRET;//第三方用户唯一凭证密钥，即appsecret
         //这个url链接地址和参数皆不能变
-//        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + appId + "&secret=" + secret;  //访问链接
+        //String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + appId + "&secret=" + secret;  //访问链接
         String url = oauth2_access_token_url.replace("APPID", appId).replace("SECRET", secret).replace("CODE", code);
         try {
             URL urlGet = new URL(url);

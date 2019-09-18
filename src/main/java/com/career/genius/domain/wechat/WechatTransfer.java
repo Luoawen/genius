@@ -27,6 +27,4 @@ public class WechatTransfer extends BaseEntity {
     private String fromUser;
 
 
-
-
 }
