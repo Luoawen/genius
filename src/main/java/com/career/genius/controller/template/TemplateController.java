@@ -7,6 +7,8 @@ import com.career.genius.application.template.vo.TemplateDetailVO;
 import com.career.genius.application.template.vo.TemplateVO;
 import com.career.genius.application.template.vo.TemplateViewInfoVO;
 import com.career.genius.config.Exception.GeniusException;
+import com.career.genius.utils.common.PageQuery;
+import com.usm.dto.SearchDto;
 import com.usm.enums.CodeEnum;
 import com.usm.vo.BaseResultDto;
 import com.usm.vo.EntityDto;
@@ -91,8 +93,7 @@ public class TemplateController {
 
     @ApiOperation(value = "获取模板列表")
     @GetMapping(value = "/templates/{userId}")
-    public ListDto<TemplateVO> getTemplateList(@PathVariable("userId") String userId, String query) {
-        List<TemplateVO> templateList = templateQuery.getTemplateList(userId,query);
-        return new ListDto<>(templateList,CodeEnum.Success.getCode(),"成功");
+    public PageDto<TemplateVO> getTemplateList(@PathVariable("userId") String userId, PageQuery query) {
+        return templateQuery.getTemplateList(userId, query);
     }
 }

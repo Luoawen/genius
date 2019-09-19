@@ -33,7 +33,7 @@ public class TemplateQuery {
      * @param userId
      * @return
      */
-    public List<TemplateVO> getTemplateList(String userId,String query) {
+    public PageDto<TemplateVO> getTemplateList(String userId,PageQuery query) {
         StringBuffer sql = new StringBuffer();
         ArrayList<String> param = new ArrayList<>();
         sql.append(" SELECT t.id, t.template_name, t.title, t.content, t.create_time,");
@@ -53,8 +53,7 @@ public class TemplateQuery {
             param.add("%" + query + "%");
         }
         sql.append(" ORDER BY t.create_time DESC ");
-        List<TemplateVO> result = supportJdbcTemplate.queryForList(sql.toString(), TemplateVO.class, param.toArray());
-        return result;
+        return supportJdbcTemplate.queryForPage(sql, TemplateVO.class, param,query);
     }
 
     public TemplateVO getTemplateInfo(String templateId) {
@@ -62,8 +61,7 @@ public class TemplateQuery {
         sql.append(" SELECT id, template_name, title, content, create_time, update_time,content_type ");
         sql.append(" FROM app_template ");
         sql.append(" WHERE id = ? ");
-        TemplateVO templateVO = supportJdbcTemplate.queryForDto(sql.toString(), TemplateVO.class, templateId);
-        return templateVO;
+        return supportJdbcTemplate.queryForDto(sql.toString(), TemplateVO.class, templateId);
     }
 
     public TemplateViewInfoVO getTemplateViewInfo(String templateId) {
