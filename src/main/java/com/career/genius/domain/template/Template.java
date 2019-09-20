@@ -1,14 +1,12 @@
 package com.career.genius.domain.template;
 
 import com.career.genius.domain.common.BaseEntity;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 请描述该类
