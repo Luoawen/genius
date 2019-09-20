@@ -48,7 +48,7 @@ public class TemplateQuery {
         sql.append(" ON t.id = v3.template_id ");
         sql.append(" WHERE user_id = ? AND is_delete = 0 ");
         param.add(userId);
-        if (ObjectHelper.isNotEmpty(query)) {
+        if (ObjectHelper.isNotEmpty(query.getQuery())) {
             sql.append(" AND t.app_content LIKE ? ");
             param.add("%" + query + "%");
         }
