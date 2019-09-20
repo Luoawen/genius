@@ -46,6 +46,8 @@ public class Template extends BaseEntity {
     @Column(name = "content_type",columnDefinition = "int comment'内容类型<1:链接  2：文本>'")
     private Integer contentType;
 
+    @Column(name = "last_view_time",columnDefinition = "datetime comment'最后浏览时间'")
+    private Date lastViewTime;
 
     public void addTemplate(String title,String content,String userId,String description, String titleImage, String appContent,Integer contentType) {
         this.title = title;

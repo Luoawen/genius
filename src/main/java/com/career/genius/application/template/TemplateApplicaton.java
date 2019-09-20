@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  * 请描述该类
  *
@@ -100,7 +102,7 @@ public class TemplateApplicaton {
             views.addViewTimes();
         } else {
             views = new TemplateViews();
-            views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage(),dto.getUserId());
+            views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage(),dto.getUserId(),template.getUserId());
         }
         views = viewTemplateDao.save(views);
         TemplateVO templateVO = templateQuery.getTemplateInfo(dto.getTemplateId());
@@ -110,6 +112,7 @@ public class TemplateApplicaton {
             user.addUser(dto.getViewUserName(),"",dto.getViewUserHeadImage(),dto.getViewUserOpenId(),"");
             userDao.save(user);
         }
+        template.setLastViewTime(new Date());
         templateVO.setViewId(views.getId());
         return templateVO;
     }
@@ -125,6 +128,10 @@ public class TemplateApplicaton {
         if (templateView != null) {
             templateView.changeTemplateViewDuration(times);
             viewTemplateDao.save(templateView);
+
+            Template template = templateDao.findTemplateById(templateView.getTemplateId());
+            template.setLastViewTime(new Date());
+            templateDao.save(template);
         }
     }
 

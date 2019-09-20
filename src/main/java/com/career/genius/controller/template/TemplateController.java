@@ -3,6 +3,7 @@ package com.career.genius.controller.template;
 import com.career.genius.application.template.TemplateApplicaton;
 import com.career.genius.application.template.dto.TemplateDto;
 import com.career.genius.application.template.query.TemplateQuery;
+import com.career.genius.application.template.vo.AllTemplateViewVO;
 import com.career.genius.application.template.vo.TemplateDetailVO;
 import com.career.genius.application.template.vo.TemplateVO;
 import com.career.genius.application.template.vo.TemplateViewInfoVO;
@@ -85,11 +86,19 @@ public class TemplateController {
         return new EntityDto<>(viewInfo,CodeEnum.Success.getCode(),"成功");
     }
 
-    @ApiOperation(value = "获取用户模板浏览数据分页")
+    @ApiOperation(value = "获取单个模板浏览数据分页")
     @GetMapping(value = "/templates/{templateId}/view/page")
     public PageDto<TemplateDetailVO> getTemplateViewPage(@PathVariable("templateId") String templateId) {
         return templateQuery.getTemplateViewDetail(templateId);
     }
+
+    @ApiOperation(value = "获取用户所有模板浏览数据分页")
+    @GetMapping(value = "/{userId}/templates/view/page")
+    public PageDto<AllTemplateViewVO> getTemplatesViewPage(@PathVariable("userId") String userId) {
+        return templateQuery.getTemplateViewsDetail(userId);
+    }
+
+
 
     @ApiOperation(value = "获取模板列表")
     @GetMapping(value = "/templates/{userId}")

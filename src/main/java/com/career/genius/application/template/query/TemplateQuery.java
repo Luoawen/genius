@@ -1,13 +1,18 @@
 package com.career.genius.application.template.query;
 
+import com.career.genius.application.template.vo.AllTemplateViewVO;
 import com.career.genius.application.template.vo.TemplateDetailVO;
 import com.career.genius.application.template.vo.TemplateVO;
 import com.career.genius.application.template.vo.TemplateViewInfoVO;
+import com.career.genius.domain.template.TemplateViews;
+import com.career.genius.port.dao.template.TemplateDao;
+import com.career.genius.port.dao.template.ViewTemplateDao;
 import com.career.genius.utils.common.PageQuery;
 import com.career.genius.utils.jdbcframework.SupportJdbcTemplate;
 import com.usm.utils.ObjectHelper;
 import com.usm.vo.PageDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -28,6 +33,8 @@ public class TemplateQuery {
     @Resource
     SupportJdbcTemplate supportJdbcTemplate;
 
+    @Autowired
+    ViewTemplateDao viewTemplateDao;
     /**
      * 获取用户发布的所有素材
      * @param userId
@@ -87,4 +94,25 @@ public class TemplateQuery {
         PageQuery query = new PageQuery();
         return this.supportJdbcTemplate.queryForPage(sql,TemplateDetailVO.class,param,query);
     }
+
+    public PageDto<AllTemplateViewVO> getTemplateViewsDetail(String userId) {
+        StringBuffer sql = new StringBuffer();
+        ArrayList<Object> param = new ArrayList<>();
+
+        sql.append(" SELECT SUM(view_times) view_times,SUM(view_duration) view_duration,user_id,view_user_openid,view_user_head_image,view_user_name,");
+        sql.append(" create_time, update_time ");
+        sql.append(" FROM template_views  ");
+        sql.append(" WHERE user_id = ? GROUP BY view_user_openid ORDER BY create_time");
+        param.add(userId);
+        PageQuery query = new PageQuery();
+        return this.supportJdbcTemplate.queryForPage(sql,AllTemplateViewVO.class,param,query);
+    }
+
+   /* public PageDto<TemplateViewDetailVO> getTemplateViewDetail(String templateId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" SELECT view_times, view_duration, v.template_id, v.create_time ");
+        sql.append(" FROM template_views ");
+        sql.append(" WHERE  ")
+
+    }*/
 }
