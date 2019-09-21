@@ -115,6 +115,8 @@ public class TemplateApplicaton {
         }
         template.setLastViewTime(new Date());
         templateVO.setViewId(views.getId());
+        templateVO.setTitleImage(template.getTitleImage());
+        templateVO.setDescription(template.getDescription());
         return templateVO;
     }
 
