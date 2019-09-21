@@ -50,7 +50,7 @@ public class IndexController {
         String sourceUrl = WechatUtil.getRequestUri(req);
         log.info("sourceUrl:{}", sourceUrl);
         CookieUser cookieUser = getCookieUser(req, resp);
-        log.info(req.getParameter("templateId"));
+        log.info("templateId:{}", req.getParameter("templateId"));
         if (null == cookieUser) {
             UaType uaType = getUaType(req);
             switch (uaType) {
