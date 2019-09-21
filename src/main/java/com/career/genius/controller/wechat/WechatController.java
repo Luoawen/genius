@@ -74,7 +74,7 @@ public class WechatController {
     @ApiOperation(value = "微信分享页面请求的数据")
     @PostMapping(value = "/share/code")
     public EntityDto<TemplateVO> getShareTemplate(@RequestBody ViewTemplateDto dto) throws GeniusException {
-        log.info(JSON.toJSONString(dto));
+        log.info("share dto:{}", JSON.toJSONString(dto));
         // 不需要每次都去微信授权索取用户信息，直接在库里面找
 //        WechatTokenDto wechatToken = wxService.getTokenByCode(dto.getWechatCode());
 //        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccess_token(), wechatToken.getOpenId());

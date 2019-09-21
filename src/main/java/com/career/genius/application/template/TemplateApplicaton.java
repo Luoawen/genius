@@ -103,6 +103,7 @@ public class TemplateApplicaton {
         } else {
             views = new TemplateViews();
             views.addViewInfo(dto.getTemplateId(),dto.getViewUserOpenId(),dto.getViewUserName(),dto.getViewUserHeadImage(),dto.getUserId(),template.getUserId());
+            views.setFromUser(dto.getShareUserId());
         }
         views = viewTemplateDao.save(views);
         TemplateVO templateVO = templateQuery.getTemplateInfo(dto.getTemplateId());

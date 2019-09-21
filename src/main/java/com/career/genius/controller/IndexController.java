@@ -41,9 +41,6 @@ public class IndexController {
     @Autowired
     TemplateApplicaton templateApplicaton;
 
-    @Autowired
-    TemplateQuery templateQuery;
-
 
     @GetMapping(value = "/index")
     public String index(HttpServletRequest req, HttpServletResponse resp, Model model) {

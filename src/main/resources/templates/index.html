@@ -24,7 +24,8 @@
             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
         });
 
-        function getQueryString(name) {
+        // 获取URL中的参数值
+        function getParamVal(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
             var r = window.location.search.substr(1).match(reg);
@@ -38,12 +39,61 @@
             }
         }
 
+        // 设置URL中参数值
+        function setParamVal(url, name, value) {
+           var str = "";
+           if (url.indexOf('?') != -1)
+               str = url.substr(url.indexOf('?') + 1);
+           else
+               return url + "?" + name + "=" + value;
+           var returnurl = "";
+           var setparam = "";
+           var arr;
+           var modify = "0";
+
+           if (str.indexOf('&') != -1) {
+               arr = str.split('&');
+               for (i in arr) {
+                   if (arr[i].split('=')[0] == name) {
+                       setparam = value;
+                       modify = "1";
+                   }
+                   else {
+                       setparam = arr[i].split('=')[1];
+                   }
+                   returnurl = returnurl + arr[i].split('=')[0] + "=" + setparam + "&";
+               }
+               returnurl = returnurl.substr(0, returnurl.length - 1);
+               if (modify == "0")
+                   if (returnurl == str)
+                       returnurl = returnurl + "&" + name + "=" + value;
+           } else {
+               if (str.indexOf('=') != -1) {
+                   arr = str.split('=');
+                   if (arr[0] == name) {
+                       setparam = value;
+                       modify = "1";
+                   } else {
+                       setparam = arr[1];
+                   }
+                   returnurl = arr[0] + "=" + setparam;
+                   if (modify == "0")
+                       if (returnurl == str)
+                           returnurl = returnurl + "&" + name + "=" + value;
+               } else
+                   returnurl = name + "=" + value;
+           }
+           return url.substr(0, url.indexOf('?')) + "?" + returnurl;
+        }
+
         $(function () {
             var userId = [[${userId}]];
+            var shareUserId = getParamVal('shareUserId');
             var templateId = [[${templateId}]];
 
             var param = {
                 'userId': userId,
+                'shareUserId': shareUserId,
                 'templateId': templateId
             };
             $.ajax({
@@ -75,7 +125,8 @@
                     //document.body.append(all);
 
                     shareTitle = '来吧，开始分享喽';
-                    shareLink = 'http://m.yunmaidianzi.com/index?templateId=' + templateId + '&shareUserId=' + userId;
+                    //shareLink = 'http://m.yunmaidianzi.com/index?templateId=' + templateId + '&shareUserId=' + userId;
+                    shareLink = setParamVal(window.location.href, 'shareUserId', userId);
 
                     wx.ready(function () {
 
