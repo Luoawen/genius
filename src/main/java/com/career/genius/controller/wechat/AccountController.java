@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 用户登录注册验证控制器
@@ -42,12 +43,11 @@ public class AccountController {
      * @return
      */
     @GetMapping(value = "/wechatUserLogin")
-    public String getWeixinUserInfo(HttpServletRequest request, HttpServletResponse response) {
+    public String getWeixinUserInfo(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         String code = request.getParameter("code");
         String sourceUrl = request.getParameter("sourceUrl");
         String appId = request.getAttribute("appId") == null ? Config.WX_APP_ID : request.getAttribute("appId").toString();
         String appSecretKey = request.getAttribute("appSecretKey") == null ? Config.WX_APP_SECRET : request.getAttribute("appSecretKey").toString();
-        logger.info("微信授权回调成功,开始授权回调code:{} appid:{} url:{}", code, appId, sourceUrl);
         if (!StringUtil.empty(code)) {
             JSONObject weiXinOauth2Token = WechatUtil.getAccessToken(appId, appSecretKey, code);
             logger.info("code:{} weiXinOauth2Token:{}", code, weiXinOauth2Token);
