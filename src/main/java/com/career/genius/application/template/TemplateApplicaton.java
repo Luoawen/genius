@@ -114,6 +114,7 @@ public class TemplateApplicaton {
             userDao.save(user);
         }
         template.setLastViewTime(new Date());
+
         templateVO.setViewId(views.getId());
         templateVO.setTitleImage(template.getTitleImage());
         templateVO.setDescription(template.getDescription());
