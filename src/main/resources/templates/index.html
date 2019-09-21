@@ -123,6 +123,7 @@
 
                     shareTitle = data.data.title;
                     shareImg = data.data.titleImage;
+                    alert('shareTitle=' + shareTitle + 'shareImg=' + shareImg);
                     shareLink = setParamVal(window.location.href, 'shareUserId', userId);
 
                     wx.ready(function () {
