@@ -88,12 +88,8 @@ public class SupportJdbcTemplate {
 
         String replacedString = sql.substring(sql.indexOf("SELECT") + 6, index);
         String newSql = sql.replace(replacedString, " COUNT(1) ");
-        if (newSql.contains("GROUP BY")) {
-            return this.jdbcTemplate.queryForObject(newSql.substring(0,newSql.indexOf("GROUP BY")), Integer.class,param.toArray());
-        } else if (newSql.contains("ORDER BY")) {
-            return this.jdbcTemplate.queryForObject(newSql.substring(0,newSql.indexOf("ORDER BY")), Integer.class,param.toArray());
-        }
-        return 0;
+        Integer total = this.jdbcTemplate.queryForObject(newSql.substring(0,newSql.indexOf("ORDER BY")), Integer.class,param.toArray());
+        return total;
     }
 
     public static int getFirstMatchingIndex(String input, String query) {
