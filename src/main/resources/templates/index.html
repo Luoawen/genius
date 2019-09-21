@@ -21,15 +21,6 @@
             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
         });
 
-        <!--wx.onMenuShareTimeline({
-            title: '', // 分享标题
-            link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
-            success: function () {
-                // 用户点击了分享后执行的回调函数
-            }
-        });-->
-
         wx.ready(function () {
             // 自定义“分享给朋友”
             wx.updateAppMessageShareData({

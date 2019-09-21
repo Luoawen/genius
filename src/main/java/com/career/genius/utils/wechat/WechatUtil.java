@@ -191,7 +191,7 @@ public class WechatUtil {
         log.info("accessToken:{}", accessToken);
 
         String jsapiTicket = getTicket(accessToken);
-        log.debug("jsapiTicket:{}", jsapiTicket);
+        log.info("jsapiTicket:{}", jsapiTicket);
         SortedMap<String, String> params = new TreeMap<String, String>();
         String nonceStr = com.career.genius.utils.StringUtil.randomString(32);
         String timeStamp = Sha1Util.getTimeStamp();
@@ -209,7 +209,6 @@ public class WechatUtil {
             model.addAttribute("signature", signature);
             log.info("--- weixin model params: appId:{} --signature:{}", appId, signature);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage());
         }
     }
