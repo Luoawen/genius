@@ -23,7 +23,7 @@ public class WechatUtil {
     /**
      * 不弹出授权页面，直接跳转，只能获取用户openid
      */
-    //public static final String SCOPESNSAPIBASE = "snsapi_base";
+    public static final String SCOPESNSAPIBASE = "snsapi_base";
     /**
      * 弹出用户授权页面，可获取客户其他信息
      */
@@ -38,6 +38,8 @@ public class WechatUtil {
      * 网页授权获取用户基本信息第二步：通过code换取网页授权access_token（GET）
      */
     public static String oauth2_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+
+    public final static String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 
     public static WechatDto getWinXinEntity(String url) {
         WechatDto wx = new WechatDto();
@@ -84,6 +86,31 @@ public class WechatUtil {
         return url;
     }
 
+    public static String getAccessToken(String appId, String secret) {
+        String accessToken = "";
+        String requestUrl = ACCESS_TOKEN_URL.replace("APPID", appId).replace("APPSECRET", secret);
+        try {
+            URL urlGet = new URL(requestUrl);
+            HttpURLConnection http = (HttpURLConnection) urlGet.openConnection();
+            http.setRequestMethod("GET");
+            http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            http.setDoOutput(true);
+            http.setDoInput(true);
+            http.connect();
+            InputStream is = http.getInputStream();
+            int size = is.available();
+            byte[] jsonBytes = new byte[size];
+            is.read(jsonBytes);
+            String message = new String(jsonBytes);
+            JSONObject json = JSONObject.fromObject(message);
+            accessToken = json.getString("access_token");
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return accessToken;
+    }
+
     /**
      * 获取token
      * @param appId
@@ -92,12 +119,8 @@ public class WechatUtil {
      * @return
      */
     public static JSONObject getAccessToken(String appId, String secret, String code) {
-//        String access_token = "";
-        String grant_type = "client_credential";//获取access_token填写client_credential
-//        String AppId = Config.WX_APP_ID;//第三方用户唯一凭证
-//        String secret = Config.WX_APP_SECRET;//第三方用户唯一凭证密钥，即appsecret
+//        String grant_type = "client_credential";//获取access_token填写client_credential
         //这个url链接地址和参数皆不能变
-        //String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=" + grant_type + "&appid=" + appId + "&secret=" + secret;  //访问链接
         String url = oauth2_access_token_url.replace("APPID", appId).replace("SECRET", secret).replace("CODE", code);
         try {
             URL urlGet = new URL(url);
@@ -122,10 +145,14 @@ public class WechatUtil {
         return null;
     }
 
-    // 获取ticket
-    private static String getTicket(String access_token) {
+    /**
+     * 获取ticket
+     * @param accessToken
+     * @return
+     */
+    public static String getTicket(String accessToken) {
         String ticket = null;
-        String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + access_token + "&type=jsapi";// 这个url链接和参数不能变
+        String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + accessToken + "&type=jsapi";// 这个url链接和参数不能变
         try {
             URL urlGet = new URL(url);
             HttpURLConnection http = (HttpURLConnection) urlGet.openConnection();
@@ -159,7 +186,11 @@ public class WechatUtil {
         } else {
             appId = appIdObj.toString();
         }
-        String jsapiTicket = getJsapiTicket(appId);
+        String appSecretKey = request.getAttribute("appSecretKey") == null ? Config.WX_APP_SECRET : request.getAttribute("appSecretKey").toString();
+        String accessToken = getAccessToken(appId, appSecretKey);
+        log.info("accessToken:{}", accessToken);
+
+        String jsapiTicket = getTicket(accessToken);
         log.debug("jsapiTicket:{}", jsapiTicket);
         SortedMap<String, String> params = new TreeMap<String, String>();
         String nonceStr = com.career.genius.utils.StringUtil.randomString(32);
@@ -207,9 +238,4 @@ public class WechatUtil {
         return requestUrl.trim();
     }
 
-    private static String getJsapiTicket(String appId) {
-        // TODO 获取
-
-        return "";
-    }
 }
