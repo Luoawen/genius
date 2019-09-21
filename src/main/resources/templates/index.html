@@ -11,6 +11,9 @@
     <script th:inline="javascript">
 
         var viewsId = '';
+        var title = '';
+        var shareLink = window.location.href;
+        var shareImg = '';
 
         wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -20,32 +23,6 @@
             signature: [[${signature}]],// 必填，签名
             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
         });
-
-        wx.ready(function () {
-            // 自定义“分享给朋友”
-            wx.updateAppMessageShareData({
-                title: '自定义分享给朋友标题', // 分享标题
-                desc: '测试分享', // 分享描述
-                link: 'http://m.yunmaidianzi.com/index', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
-                success: function () {
-                    // 设置成功
-                    alert('set ok');
-                }
-            });
-
-            // 自定义“分享到朋友圈”
-            wx.updateTimelineShareData({
-                title: '自定义分享到朋友圈标题', // 分享标题
-                link: 'http://m.yunmaidianzi.com/index', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
-                success: function () {
-                    // 设置成功
-                    alert('set ok');
-                }
-            });
-        });
-
 
         function getQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -63,9 +40,7 @@
 
         $(function () {
             var userId = [[${userId}]];
-            //var templateId = getQueryString("templateId");
             var templateId = [[${templateId}]];
-           // alert('userId=' + userId + ',templateId' + templateId);
 
             var param = {
                 'userId': userId,
@@ -81,12 +56,14 @@
                     var content = data.data.content;
                     viewsId = data.data.viewId;
                     var contentType = data.data.contentType;
+
                    // alert(content);
                     /*var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
                         all = all + currentValue.content + "<br/>";
                     }, this)*/
+
                     if (contentType === 1) {
                         var temp = '<iframe src= "http://' + content + '" height="100%" width="100%" align="center"></iframe>';
                         $("#content").html(temp);
@@ -97,6 +74,34 @@
 
                     //document.body.append(all);
 
+
+                    shareLink = 'http://m.yunmaidianzi.com/index?templateId=' + templateId + '&shareUserId=' + userId;
+
+                    wx.ready(function () {
+
+                        // 自定义“分享给朋友”
+                        wx.updateAppMessageShareData({
+                            title: '自定义分享给朋友标题', // 分享标题
+                            desc: '测试分享', // 分享描述
+                            link: 'http://m.yunmaidianzi.com/index', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
+                            success: function () {
+                                // 设置成功
+                                alert('set ok');
+                            }
+                        });
+
+                        // 自定义“分享到朋友圈”
+                        wx.updateTimelineShareData({
+                            title: '自定义分享到朋友圈标题', // 分享标题
+                            link: 'http://m.yunmaidianzi.com/index', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
+                            success: function () {
+                                // 设置成功
+                                alert('set ok');
+                            }
+                        });
+                    });
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
