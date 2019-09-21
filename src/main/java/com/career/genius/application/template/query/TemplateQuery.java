@@ -9,6 +9,7 @@ import com.career.genius.port.dao.template.TemplateDao;
 import com.career.genius.port.dao.template.ViewTemplateDao;
 import com.career.genius.utils.common.PageQuery;
 import com.career.genius.utils.jdbcframework.SupportJdbcTemplate;
+import com.usm.enums.CodeEnum;
 import com.usm.utils.ObjectHelper;
 import com.usm.vo.PageDto;
 import lombok.extern.slf4j.Slf4j;
@@ -95,17 +96,29 @@ public class TemplateQuery {
         return this.supportJdbcTemplate.queryForPage(sql,TemplateDetailVO.class,param,query);
     }
 
-    public PageDto<AllTemplateViewVO> getTemplateViewsDetail(String userId) {
+    public PageDto<AllTemplateViewVO> getTemplateViewsDetail(String userId,PageQuery queryParam) {
         StringBuffer sql = new StringBuffer();
-        ArrayList<Object> param = new ArrayList<>();
+        PageDto<AllTemplateViewVO> result = new PageDto<>();
 
         sql.append(" SELECT SUM(view_times) view_times,SUM(view_duration) view_duration,user_id,view_user_openid,view_user_head_image,view_user_name,");
         sql.append(" create_time, update_time ");
         sql.append(" FROM template_views  ");
         sql.append(" WHERE user_id = ? GROUP BY view_user_openid ORDER BY create_time");
-        param.add(userId);
-        PageQuery query = new PageQuery();
-        return this.supportJdbcTemplate.queryForPage(sql,AllTemplateViewVO.class,param,query);
+
+
+        List<AllTemplateViewVO> viewVOS = this.supportJdbcTemplate.queryForList(sql.toString(), AllTemplateViewVO.class, userId);
+        result.setData(viewVOS);
+        sql.setLength(0);
+        sql.append(" SELECT COUNT(1) FROM template_views where user_id = ?");
+        Integer total = supportJdbcTemplate.jdbcTemplate().queryForObject(sql.toString(), Integer.class, userId);
+        result.setTotal(total);
+        result.setPageSize(queryParam.getLimit());
+        result.setCurrentpage(queryParam.getPage());
+        int temp = (total + queryParam.getLimit() - 1) / queryParam.getLimit();
+        result.setTotalPage(temp <= 0 ? 1 : temp);
+        result.setCode(CodeEnum.Success.getCode());
+        result.setMsg("成功");
+        return result;
     }
 
    /* public PageDto<TemplateViewDetailVO> getTemplateViewDetail(String templateId) {

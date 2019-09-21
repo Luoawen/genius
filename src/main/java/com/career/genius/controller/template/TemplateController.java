@@ -94,8 +94,8 @@ public class TemplateController {
 
     @ApiOperation(value = "获取用户所有模板浏览数据分页")
     @GetMapping(value = "/{userId}/templates/view/page")
-    public PageDto<AllTemplateViewVO> getTemplatesViewPage(@PathVariable("userId") String userId) {
-        return templateQuery.getTemplateViewsDetail(userId);
+    public PageDto<AllTemplateViewVO> getTemplatesViewPage(@PathVariable("userId") String userId,PageQuery queryParam) {
+        return templateQuery.getTemplateViewsDetail(userId,queryParam);
     }
 
 
