@@ -121,11 +121,8 @@
                         $("#content").html(content);
                     }
 
-
-                    //document.body.append(all);
-
-                    shareTitle = '来吧，开始分享喽';
-                    //shareLink = 'http://m.yunmaidianzi.com/index?templateId=' + templateId + '&shareUserId=' + userId;
+                    shareTitle = data.data.title;
+                    shareImg = data.data.titleImage;
                     shareLink = setParamVal(window.location.href, 'shareUserId', userId);
 
                     wx.ready(function () {
@@ -135,10 +132,10 @@
                             title: shareTitle, // 分享标题
                             desc: '测试分享', // 分享描述
                             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
+                            imgUrl: shareImg, // 分享图标
                             success: function () {
                                 // 设置成功
-                                alert('set ok');
+                                // alert('set ok');
                             }
                         });
 
@@ -146,10 +143,10 @@
                         wx.updateTimelineShareData({
                             title: shareTitle, // 分享标题
                             link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                            imgUrl: 'http://courier.oss-cn-shenzhen.aliyuncs.com/image/FA795B49-C4A3-4335-9C00-858C30C49986.png', // 分享图标
+                            imgUrl: shareImg, // 分享图标
                             success: function () {
                                 // 设置成功
-                                alert('set ok');
+                                // alert('set ok');
                             }
                         });
                     });

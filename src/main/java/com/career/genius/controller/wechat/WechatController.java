@@ -76,10 +76,6 @@ public class WechatController {
     public EntityDto<TemplateVO> getShareTemplate(@RequestBody ViewTemplateDto dto) throws GeniusException {
         log.info("share dto:{}", JSON.toJSONString(dto));
         // 不需要每次都去微信授权索取用户信息，直接在库里面找
-//        WechatTokenDto wechatToken = wxService.getTokenByCode(dto.getWechatCode());
-//        WechatUserInfo wechatUserInfo = wxService.getWechatInfoByTokenAndOpenId(wechatToken.getAccess_token(), wechatToken.getOpenId());
-//        dto.setWechatUserInfo(wechatUserInfo.getNickname(),wechatUserInfo.getHeadImgUrl());
-
         String userId = dto.getUserId();
         if (StringUtil.isNotEmpty(userId)) {
             User user = userApplication.getUserById(userId);
@@ -101,10 +97,5 @@ public class WechatController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
-
-
 
 }
