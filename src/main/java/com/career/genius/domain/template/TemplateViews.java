@@ -41,18 +41,22 @@ public class TemplateViews extends BaseEntity {
     @Column(name = "from_user",columnDefinition = "int comment'分享来自'")
     private String fromUser;
 
+    @Column(name = "user_id",columnDefinition = "varchar(32) comment'模板属于的用户'")
+    private String userId;
+
     /**
      * @Author Marker
      * @Date  添加模板被浏览记录
      * @Discription
      **/
-    public void addViewInfo(String templateId,String viewUserOpenId,String viewUserName,String viewUserHeadImage, String fromUser) {
+    public void addViewInfo(String templateId,String viewUserOpenId,String viewUserName,String viewUserHeadImage, String fromUser,String userId) {
         this.templateId = templateId;
         this.viewUserOpenId = viewUserOpenId;
         this.viewUserName = viewUserName;
         this.viewUserHeadImage = viewUserHeadImage;
         this.viewTimes = 1;
         this.fromUser = fromUser;
+        this.userId = userId;
         super.setCreateTime(new Date());
         super.setUpdateTime(new Date());
     }

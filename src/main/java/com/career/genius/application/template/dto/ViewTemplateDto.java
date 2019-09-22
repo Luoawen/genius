@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
-
 /**
  * 请描述该类
  *
@@ -17,12 +15,16 @@ import javax.persistence.Column;
 @Data
 @ApiModel
 public class ViewTemplateDto {
+
     @ColumnAlias(value = "template_id")
     @ApiModelProperty(value = "模板ID")
     private String templateId;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "被分享用户ID")
     private String userId;
+
+    @ApiModelProperty(value = "分享用户ID")
+    private String shareUserId;
 
     @ApiModelProperty(value = "微信授权code")
     private String wechatCode;

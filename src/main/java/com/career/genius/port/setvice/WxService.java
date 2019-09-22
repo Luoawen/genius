@@ -75,9 +75,10 @@ public class WxService {
         return null;
     }
 
-    public WechatUserInfo getWechatInfoByTokenAndOpenId(String token, String openId) {
+    public WechatUserInfo getWechatInfoByTokenAndOpenId(String token, String openId) throws UnsupportedEncodingException {
         String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + token + "&openid=" + openId + "&lang=zh_CN";
-        JSONObject result = JSONObject.parseObject(restTemplate.getForObject(url, String.class));
+        String jsonResult = restTemplate.getForObject(url, String.class);
+        JSONObject result = JSONObject.parseObject(new String(jsonResult.getBytes("ISO-8859-1"), "UTF-8"));
         log.error("微信获取的用户信息----->{}",result);
         if (ObjectHelper.isNotEmpty(result)) {
             if (ObjectHelper.isNotEmpty(result.get("errcode"))) {

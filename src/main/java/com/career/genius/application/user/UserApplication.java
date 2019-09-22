@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 请描述该类
@@ -61,7 +62,7 @@ public class UserApplication {
      * @param request
      * @return
      */
-    public String getUserId(JSONObject weiXinOauth2Token, HttpServletRequest request) {
+    public String getUserId(JSONObject weiXinOauth2Token, HttpServletRequest request) throws UnsupportedEncodingException {
         log.info("weiXinOauth2Token:{}", weiXinOauth2Token);
 //        {"access_token":"24_Dk0Qxpzf4NYCX_r5sXDH9H8OnW38DQN309Qscu7cMVV4ZAqjIF0t1BHxZHiQ3loQukaMd18CszFZvIQPZALr1QBWkpW_L1Tpm95JiyvdHTk","expires_in":7200,"refresh_token":"24_iq5_SIsIrdCMVg5yDLtfL6PvFF4-RPHi1O2-OZ9rKrBQ1qWh9-R8dXo-nqHL2_IIBrwgB35yi3l5LyhoHtpm1AqgDDcA_LYWQqP9VP4DoIw","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_userinfo","unionid":"ogaZW5_sQo63fPjoYSv3P9holuUI"}
 //        {"access_token":"24_eDcOy8FDkdi4NvOpNE2oQa7qCzMXS65ZPvhkUs2ys_uV_W8hiqlbHiKPxxfQKgg8VtOIT-r_SnzEz-GZDwi4Ew","expires_in":7200,"refresh_token":"24_pLEUAhJqN4cTQirTnnpAmnPp_svoW7mI1OmRJEiIJ_zrAjmUJ0dkIJQYlA769Df1IfA5-bcCTS91c-bxs7vqJA","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_base"}

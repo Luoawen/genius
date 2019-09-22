@@ -6,47 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title></title>
     <link rel="stylesheet" href="./index.css">
+    <script th:src="@{/js/jweixin-1.4.0.js}" type="text/javascript"></script>
     <script th:src="@{/js/jquery-2.0.0.min.js}" type="text/javascript"></script>
     <script th:src="@{/js/jweixin-1.4.0.js}" type="text/javascript"></script>
+    <script th:src="@{/js/record.js}" type="text/javascript"></script>
+
     <script th:inline="javascript">
 
         var viewsId = '';
-        var sec = 0;
-        var minu = 0;
-        var hou = 0;
-        // 每隔一秒刷新一次
-        window.setTimeout("uupdate()", 1000);
+        var shareTitle = '';
+        var shareLink = window.location.href;
+        var shareImg = '';
 
-        function uupdate() {
-            sec++;
-            if (sec == 60) {
-                sec = 0;
-                minu += 1;
-            }
-            if (minu == 60) {
-                minu = 0;
-                hou += 1;
-            }
-            var ss04 = hou + "时" + minu + "分" + sec + "秒";
-            document.getElementById('yy004').innerHTML = ss04;
-            window.setTimeout("uupdate()", 1000);
-        }
-
-        wx.onMenuShareTimeline({
-            title: '', // 分享标题
-            link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
-            success: function () {
-                // 用户点击了分享后执行的回调函数
-            }
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: [[${appId}]], // 必填，公众号的唯一标识
+            timestamp: [[${timeStamp}]], // 必填，生成签名的时间戳
+            nonceStr: [[${nonceStr}]], // 必填，生成签名的随机串
+            signature: [[${signature}]],// 必填，签名
+            jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'] // 必填，需要使用的JS接口列表
         });
 
-
-        function sign(jsapi_ticket) {
-
-        }
-
-        function getQueryString(name) {
+        // 获取URL中的参数值
+        function getParamVal(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
             var r = window.location.search.substr(1).match(reg);
@@ -60,14 +42,61 @@
             }
         }
 
+        // 设置URL中参数值
+        function setParamVal(url, name, value) {
+           var str = "";
+           if (url.indexOf('?') != -1)
+               str = url.substr(url.indexOf('?') + 1);
+           else
+               return url + "?" + name + "=" + value;
+           var returnurl = "";
+           var setparam = "";
+           var arr;
+           var modify = "0";
+
+           if (str.indexOf('&') != -1) {
+               arr = str.split('&');
+               for (i in arr) {
+                   if (arr[i].split('=')[0] == name) {
+                       setparam = value;
+                       modify = "1";
+                   }
+                   else {
+                       setparam = arr[i].split('=')[1];
+                   }
+                   returnurl = returnurl + arr[i].split('=')[0] + "=" + setparam + "&";
+               }
+               returnurl = returnurl.substr(0, returnurl.length - 1);
+               if (modify == "0")
+                   if (returnurl == str)
+                       returnurl = returnurl + "&" + name + "=" + value;
+           } else {
+               if (str.indexOf('=') != -1) {
+                   arr = str.split('=');
+                   if (arr[0] == name) {
+                       setparam = value;
+                       modify = "1";
+                   } else {
+                       setparam = arr[1];
+                   }
+                   returnurl = arr[0] + "=" + setparam;
+                   if (modify == "0")
+                       if (returnurl == str)
+                           returnurl = returnurl + "&" + name + "=" + value;
+               } else
+                   returnurl = name + "=" + value;
+           }
+           return url.substr(0, url.indexOf('?')) + "?" + returnurl;
+        }
+
         $(function () {
             var userId = [[${userId}]];
-            //var templateId = getQueryString("templateId");
+            var shareUserId = getParamVal('shareUserId');
             var templateId = [[${templateId}]];
-           // alert('userId=' + userId + ',templateId' + templateId);
 
             var param = {
                 'userId': userId,
+                'shareUserId': shareUserId,
                 'templateId': templateId
             };
             $.ajax({
@@ -80,12 +109,14 @@
                     var content = data.data.content;
                     viewsId = data.data.viewId;
                     var contentType = data.data.contentType;
+
                    // alert(content);
                     /*var jsonArr = JSON.parse(content);
                     var all = "";
                     jsonArr.forEach(function(currentValue, index, arr){
                         all = all + currentValue.content + "<br/>";
                     }, this)*/
+
                     if (contentType === 1) {
                         var temp = '<iframe src= "http://' + content + '" height="100%" width="100%" align="center"></iframe>';
                         $("#content").html(temp);
@@ -93,9 +124,37 @@
                         $("#content").html(content);
                     }
 
+                    shareTitle = data.data.title;
+                    shareImg = data.data.titleImage;
+                    // alert('shareTitle=' + shareTitle + 'shareImg=' + shareImg);
+                    shareLink = setParamVal(window.location.href, 'shareUserId', userId);
+                    var shareDesc = data.data.description;
 
-                    //document.body.append(all);
+                    wx.ready(function () {
 
+                        // 自定义“分享给朋友”
+                        wx.updateAppMessageShareData({
+                            title: shareTitle, // 分享标题
+                            desc: shareDesc, // 分享描述
+                            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: shareImg, // 分享图标
+                            success: function () {
+                                // 设置成功
+                                // alert('set ok');
+                            }
+                        });
+
+                        // 自定义“分享到朋友圈”
+                        wx.updateTimelineShareData({
+                            title: shareTitle, // 分享标题
+                            link: shareLink, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                            imgUrl: shareImg, // 分享图标
+                            success: function () {
+                                // 设置成功
+                                // alert('set ok');
+                            }
+                        });
+                    });
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("网络超时，请重试");
@@ -104,11 +163,8 @@
 
         });
     </script>
-    <script th:src="@{/js/record.js}" type="text/javascript"></script>
 </head>
 <body>
-<!--<div>当前页面停留时间：<span id="yy004" >0时0分0秒</span></div>
-<p th:text="'Hello, ' + ${userId} + '!'" />-->
 
 <div id="content"></div>
 </body>

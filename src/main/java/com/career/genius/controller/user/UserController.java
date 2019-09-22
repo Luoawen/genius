@@ -4,7 +4,6 @@ import com.career.genius.application.user.UserApplication;
 import com.career.genius.application.user.dto.WechatUserInfoDto;
 import com.career.genius.application.user.vo.MainMuenVo;
 import com.career.genius.config.sys.Submit;
-import com.career.genius.domain.common.BaseEntity;
 import com.usm.enums.CodeEnum;
 import com.usm.vo.BaseResultDto;
 import com.usm.vo.EntityDto;
@@ -13,7 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
