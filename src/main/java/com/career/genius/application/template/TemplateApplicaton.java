@@ -98,6 +98,7 @@ public class TemplateApplicaton {
             throw new GeniusException("模板不存在！");
         }
         TemplateViews views = viewTemplateDao.findTemplateViewsByViewUserOpenIdAndTemplateId(dto.getViewUserOpenId(), dto.getTemplateId());
+        log.info("templateId:{} openId:{} views:{}", dto.getTemplateId(), dto.getViewUserOpenId(), JSON.toJSON(views));
         if (ObjectHelper.isNotEmpty(views)) {
             views.addViewTimes();
         } else {
