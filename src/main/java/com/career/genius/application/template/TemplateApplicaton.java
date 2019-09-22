@@ -59,7 +59,7 @@ public class TemplateApplicaton {
         template.addTemplate(dto.getTitle(),dto.getContent(),dto.getUserId(),dto.getDescription(),dto.getTitleImage(), JSON.toJSONString(dto.getAppContent()),dto.getContentType());
         template = templateDao.save(template);
         TemplateDto result = new TemplateDto();
-        result.setResult(template.getId(),dto.getUserId(),URI + "?userId=" + dto.getUserId() + "&templateId=" + template.getId(),dto.getDescription(),dto.getTitleImage());
+        result.setResult(template.getId(),dto.getUserId(),URI + "?shareUserId=" + dto.getUserId() + "&templateId=" + template.getId(),dto.getDescription(),dto.getTitleImage());
         return result;
     }
 
