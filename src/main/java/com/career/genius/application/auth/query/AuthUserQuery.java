@@ -45,8 +45,13 @@ public class AuthUserQuery {
     public MainMuenVo getMainVO(String userId) {
         String sql = "SELECT id user_id, open_id FROM app_user WHERE id = ?";
         MainMuenVo mainMuenVo = supportJdbcTemplate.queryForDto(sql, MainMuenVo.class, userId);
-        mainMuenVo.setReleased(getRelease(userId));
-        mainMuenVo.setLooked(getViewTimes(userId));
+        if (ObjectHelper.isEmpty(mainMuenVo)) {
+            mainMuenVo.init();
+        } else {
+            mainMuenVo.setReleased(getRelease(userId));
+            mainMuenVo.setLooked(getViewTimes(userId));
+        }
+
         return mainMuenVo;
     }
 

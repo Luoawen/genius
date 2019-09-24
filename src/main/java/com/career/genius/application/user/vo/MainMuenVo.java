@@ -31,4 +31,10 @@ public class MainMuenVo {
 
     @ApiModelProperty(value = "发布过")
     private Integer released;
+
+    public void init() {
+        this.transfered = 0;
+        this.looked = 0;
+        this.released = 0;
+    }
 }

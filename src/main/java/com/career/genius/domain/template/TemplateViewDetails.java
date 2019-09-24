@@ -1,6 +1,7 @@
 package com.career.genius.domain.template;
 
 import com.career.genius.domain.common.BaseEntity;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
  * @time 2019-09-23 08:51
  * @discription
  **/
+@Data
 @Entity
 @Table(name = "template_view_detail")
 public class TemplateViewDetails extends BaseEntity {
