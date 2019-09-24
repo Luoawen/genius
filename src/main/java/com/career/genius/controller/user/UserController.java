@@ -1,5 +1,6 @@
 package com.career.genius.controller.user;
 
+import com.career.genius.application.auth.query.AuthUserQuery;
 import com.career.genius.application.user.UserApplication;
 import com.career.genius.application.user.dto.WechatUserInfoDto;
 import com.career.genius.application.user.vo.MainMuenVo;
@@ -12,10 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -37,10 +35,14 @@ public class UserController {
     @Autowired
     UserApplication userApplication;
 
+    @Autowired
+    AuthUserQuery userQuery;
+
     @ApiOperation(value = "首页数据接口")
     @GetMapping(value = "/users/{userId}")
-    public EntityDto<MainMuenVo> getUserData() {
-        return new EntityDto<>(new MainMuenVo(), CodeEnum.Success.getCode(),"成功");
+    public EntityDto<MainMuenVo> getUserData(@PathVariable String userId) {
+        MainMuenVo result = userQuery.getMainVO(userId);
+        return new EntityDto<>(result, CodeEnum.Success.getCode(),"成功");
     }
 
     @Submit
