@@ -64,8 +64,16 @@ public class TemplateViews extends BaseEntity {
     /**
      * 设置浏览时常
      */
-    public void changeTemplateViewDuration(String viewDuration) {
+    public void setTemplateViewDuration(String viewDuration) {
         this.viewDuration = Long.valueOf(viewDuration);
+        super.setUpdateTime(new Date());
+    }
+
+    /**
+     * 设置浏览时常
+     */
+    public void changeTemplateViewDuration(String viewDuration) {
+        this.viewDuration += Long.valueOf(viewDuration);
         super.setUpdateTime(new Date());
     }
 

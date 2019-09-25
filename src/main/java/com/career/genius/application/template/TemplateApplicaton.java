@@ -130,14 +130,16 @@ public class TemplateApplicaton {
     @Transactional
     public void updateTemplateViewTimes(String viewId, String times) throws GeniusException {
         TemplateViews templateView = viewTemplateDao.findTemplateViewsById(viewId);
-        if (templateView != null) {
+        if (templateView == null) {
+            templateView = new TemplateViews();
+            templateView.setTemplateViewDuration(times);
+        } else {
             templateView.changeTemplateViewDuration(times);
-            viewTemplateDao.save(templateView);
-
-            Template template = templateDao.findTemplateById(templateView.getTemplateId());
-            template.setLastViewTime(new Date());
-            templateDao.save(template);
         }
+        viewTemplateDao.save(templateView);
+        Template template = templateDao.findTemplateById(templateView.getTemplateId());
+        template.setLastViewTime(new Date());
+        templateDao.save(template);
     }
 
 
