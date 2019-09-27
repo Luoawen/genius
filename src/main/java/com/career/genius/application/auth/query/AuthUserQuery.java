@@ -72,7 +72,11 @@ public class AuthUserQuery {
      */
     public Integer getViewTimes(String userId) {
         String sql = " SELECT SUM(view_times) FROM template_views WHERE user_id = ? ";
-        return supportJdbcTemplate.jdbcTemplate().queryForObject(sql,Number.class,userId).intValue();
+        Number number = supportJdbcTemplate.jdbcTemplate().queryForObject(sql, Number.class, userId);
+        if (ObjectHelper.isNotEmpty(number)) {
+            return number.intValue();
+        }
+        return 0;
     }
 
 
