@@ -9,4 +9,6 @@ public interface UserDao extends JpaRepository<User,String> {
     User findUserById(String id);
 
     User findUserByOpenId(String openId);
+
+    User findUserByWechatUniqueId(String uniqueId);
 }

@@ -68,8 +68,10 @@ public class UserApplication {
 //        {"access_token":"24_eDcOy8FDkdi4NvOpNE2oQa7qCzMXS65ZPvhkUs2ys_uV_W8hiqlbHiKPxxfQKgg8VtOIT-r_SnzEz-GZDwi4Ew","expires_in":7200,"refresh_token":"24_pLEUAhJqN4cTQirTnnpAmnPp_svoW7mI1OmRJEiIJ_zrAjmUJ0dkIJQYlA769Df1IfA5-bcCTS91c-bxs7vqJA","openid":"oeepj0XnImNTH4NglMNtK0xu_mQU","scope":"snsapi_base"}
        // WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
         String openId = weiXinOauth2Token.getString("openid");
+        String uniqueId = weiXinOauth2Token.getString("uniqueid");
         String accessToken = weiXinOauth2Token.getString("access_token");
-        User user = userDao.findUserByOpenId(openId);
+        User user = userDao.findUserByWechatUniqueId(uniqueId);
+
         //用户存在则直接返回用户ID
         if (ObjectHelper.isNotEmpty(user)) {
             return user.getId();
