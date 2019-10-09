@@ -69,9 +69,9 @@ public class UserApplication {
        // WechatOauth2Token wechatToken = (WechatOauth2Token) JSONObject.toBean(weiXinOauth2Token);
         log.info("微信个人信息--------------->{}",weiXinOauth2Token.toString());
         String openId = weiXinOauth2Token.getString("openid");
-        //String uniqueId = weiXinOauth2Token.getString("uniqueid");
+        String uniqueId = weiXinOauth2Token.getString("unionid");
         String accessToken = weiXinOauth2Token.getString("access_token");
-        User user = userDao.findUserByOpenId(openId);
+        User user = userDao.findUserByWechatUniqueId(uniqueId);
 
         //用户存在则直接返回用户ID
         if (ObjectHelper.isNotEmpty(user)) {
